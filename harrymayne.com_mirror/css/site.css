@@ -1,0 +1,37 @@
+html.has-custom-js {
+  scroll-behavior: auto;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.contact-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e3e3e3;
+  background-color: #f8f8f8;
+}
+
+.contact-card .contact-email {
+  font-weight: 600;
+}
+
+.modal-card {
+  cursor: pointer;
+}
+
+.modal-card:focus-visible {
+  outline: 2px solid #d6c28f;
+  outline-offset: 4px;
+}
+
+.modal-card-close {
+  cursor: pointer;
+}
+
+.modal-card-close:focus-visible {
+  outline: 2px solid #d6c28f;
+  outline-offset: 4px;
+}

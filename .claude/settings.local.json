@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed:*)",
+      "Bash(grep:*)",
+      "Bash(for file in index.html oxford.html stanford.html oxmedica.html)",
+      "Bash(done)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(lsof:*)",
+      "WebFetch(domain:www.harrymayne.com)",
+      "Bash(do echo \"=== $file ===\")",
+      "Bash(ls:*)",
+      "Bash(for:*)",
+      "Bash(do echo \"=== $html ===\")",
+      "Bash(index.html)",
+      "Bash(oxford.html)",
+      "Bash(stanford.html)",
+      "Bash(oxmedica.html)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
