@@ -1,15 +1,44 @@
-harrymayne.com – Local Mirror
+# harrymayne.com – Local Mirror
+
+<div align="center">
+
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║             🤖  BUILT WITH A LITTLE HELP FROM FRIENDLY LLMs  🤖              ║
+║                                                                              ║
+║  ┌────────────────────────────────────────────────────────────────────────┐ ║
+║  │                                                                        │ ║
+║  │  The site (and this README) were drafted by AI collaborators—          │ ║
+║  │  mainly Claude Code and OpenAI Codex—with human steering, review,      │ ║
+║  │  and production edits.                                                 │ ║
+║  │                                                                        │ ║
+║  │  Treat this repo as a human-in-the-loop experiment: agents generate,   │ ║
+║  │  humans curate, everything ships.                                      │ ║
+║  │                                                                        │ ║
+║  └────────────────────────────────────────────────────────────────────────┘ ║
+║                                                                              ║
+║                  🚀 Co-designed with AI • Edited by a human 🚀                ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+</div>
+
+---
+
+## Overview
 
 This folder contains a local mirror of your personal website so you can start working on it with coding assistants.
 
 - Source: `https://harrymayne.com/`
-- Mirror root: `harrymayne.com_mirror/`
+- Mirror root: `docs/`
 - Pages mirrored (same-domain): `index.html`, `oxford.html`, `oxmedica.html`, `stanford.html`
-- External assets downloaded into: `harrymayne.com_mirror/_ext/<host>/...`
+- External assets downloaded into: `docs/_ext/<host>/...`
 
 Quick preview
 
-- Serve locally: `cd harrymayne.com_mirror && python3 -m http.server 8000`
+- Serve locally: `cd docs && python3 -m http.server 8000`
 - Open: `http://localhost:8000/`
 
 Notes and limitations
