@@ -27,27 +27,41 @@
 
 ---
 
-## Overview
+## Live Site
 
-This folder contains a local mirror of your personal website so you can start working on it with coding assistants.
+- Website: **[harrymayne.github.io/website](https://harrymayne.github.io/website/)**
+- Custom domain: redirects from **harrymayne.com**
 
-- Source: `https://harrymayne.com/`
-- Mirror root: `docs/`
-- Pages mirrored (same-domain): `index.html`, `oxford.html`, `oxmedica.html`, `stanford.html`
-- External assets downloaded into: `docs/_ext/<host>/...`
+This repository contains the static assets served by GitHub Pages. Everything inside `docs/` is published directly.
 
-Quick preview
+## Repository Structure
 
-- Serve locally: `cd docs && python3 -m http.server 8000`
-- Open: `http://localhost:8000/`
+| Path | Purpose |
+| --- | --- |
+| `docs/index.html`, `docs/oxford.html`, `docs/oxmedica.html`, `docs/stanford.html` | Main pages of the site. |
+| `docs/css/site.css` | Small layer of custom overrides on top of the mirrored stylesheet. |
+| `docs/js/site.js` | Navigation smoothing + modal behaviour implemented after removing Webflow runtime dependencies. |
+| `docs/_ext/` | Downloaded assets (fonts, images, PDFs) from the original Webflow export. `_ext` is published by GitHub Pages via the `.nojekyll` marker. |
+| `tools/` | Utility scripts used during mirroring/offline rewriting (kept for provenance). |
 
-Notes and limitations
+## Working Locally
 
-- Links are not rewritten; site pages reference original URLs. When served locally, same-domain pages will work. External CDN assets (CSS/JS/images/fonts) are also downloaded into `_ext/`, but the HTML keeps the original CDN references. The site will therefore render fine when online. If you need a fully offline mirror with rewritten asset URLs, I can add a post-processor to point HTML to the local `_ext` copies.
-- Query-string cache-busters (e.g., `?v=...`) are sanitized in saved filenames (a short hash is appended when needed).
-- Crawling is limited to the same domain (`harrymayne.com`, `www.harrymayne.com`) to avoid pulling in unrelated sites.
+1. Clone the repo: `git clone https://github.com/HarryMayne/website.git`
+2. Install nothing—this is a static site.
+3. Preview: `cd docs && python3 -m http.server 8000` then open `http://localhost:8000/`.
 
-Next steps
+If you make changes, commit/push to `main`; GitHub Pages will redeploy automatically from `docs/`.
 
-- If you want this to be a git repo, I can run `git init` in this project and (optionally) make the initial commit. Let me know if you want me to set a remote as well.
-- If you plan to evolve this into a fully editable codebase (rather than a mirrored export), we can scaffold a static site (e.g., Astro/Next.js) and port content/styles into source files.
+## Human × AI Workflow
+
+- Initial scaffolding and much of the templated markup were produced by large language models (Claude Code, OpenAI Codex).
+- Content decisions, accessibility fixes, form replacement, and modal reimplementation were reviewed and edited manually.
+- The history in this repo documents that collaboration and should make future maintenance straightforward.
+
+## Contributing / Feedback
+
+Open an issue or reach out via the contact details on the site if you notice accessibility problems, broken links, or have ideas for new features (e.g., additional research write-ups, teaching resources, or a news feed).
+
+---
+
+_Static content © Harry Mayne. Assets remain the property of their respective authors and institutions._
