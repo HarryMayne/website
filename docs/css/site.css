@@ -35,3 +35,8 @@ body.modal-open {
   outline: 2px solid #d6c28f;
   outline-offset: 4px;
 }
+
+/* Fix header underline to be more visible and consistent */
+.main-nav {
+  border-bottom: 2px solid #c1c2c5 !important;
+}
