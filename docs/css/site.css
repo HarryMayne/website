@@ -37,6 +37,24 @@ body.modal-open {
 }
 
 /* Fix header underline to be more visible and consistent */
+/* Remove the native border which can render inconsistently at element boundaries */
 .main-nav {
-  border-bottom: 2px solid #c1c2c5 !important;
+  border-bottom: none !important;
+  position: relative;
+}
+
+/* Use a pseudo-element for a clean, consistent bottom line */
+.main-nav::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: #c1c2c5;
+}
+
+/* Ensure child elements don't have border-bottom that could interfere */
+.name, .cv {
+  border-bottom: none !important;
 }
