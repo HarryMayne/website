@@ -3,24 +3,7 @@
 <div align="center">
 
 ```
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                                                                              ║
-║             🤖  BUILT WITH A LITTLE HELP FROM FRIENDLY LLMs  🤖              ║
-║                                                                              ║
-║  ┌────────────────────────────────────────────────────────────────────────┐ ║
-║  │                                                                        │ ║
-║  │  The site (and this README) were drafted by AI collaborators—          │ ║
-║  │  mainly Claude Code and OpenAI Codex—with human steering, review,      │ ║
-║  │  and production edits.                                                 │ ║
-║  │                                                                        │ ║
-║  │  Treat this repo as a human-in-the-loop experiment: agents generate,   │ ║
-║  │  humans curate, everything ships.                                      │ ║
-║  │                                                                        │ ║
-║  └────────────────────────────────────────────────────────────────────────┘ ║
-║                                                                              ║
-║                  🚀 Co-designed with AI • Edited by a human 🚀                ║
-║                                                                              ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+
 ```
 
 </div>
