@@ -192,7 +192,7 @@
 
   if (bindModalGroup({
     cardSelector: '.grid-5-oxford > div',
-    modalSelector: '[data-ix="button-click"]',
+    modalSelector: '.container-2-oxford > [class^="day"]',
     modalFilter: function (modal) {
       return modal.querySelector('.popup-oxford');
     },
@@ -206,7 +206,7 @@
 
   if (bindModalGroup({
     cardSelector: '.grid-5 > div',
-    modalSelector: '[data-ix="button-click"]',
+    modalSelector: '.container-2 > [class^="day"]',
     modalFilter: function (modal) {
       return modal.querySelector('.popup') && !modal.querySelector('.popup-oxford');
     },
