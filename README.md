@@ -41,6 +41,47 @@ If you make changes, commit/push to `main`; GitHub Pages will redeploy automatic
 - Content decisions, accessibility fixes, form replacement, and modal reimplementation were reviewed and edited manually.
 - The history in this repo documents that collaboration and should make future maintenance straightforward.
 
+## Roadmap / Future Features
+
+### High Priority
+
+- [ ] **Fix missing assets** - Add favicon, touch icons, and placeholder images (see `ISSUE_MISSING_ASSETS.md`)
+- [ ] **Mobile responsiveness** - Improve layout for phones and tablets (navigation menu, teaching grids, publication cards)
+- [ ] **Compact layout improvements** - Reduce whitespace/gaps between sections for a tighter design
+
+### Medium Priority
+
+- [ ] **Interactive travel map** - World map showing places visited with clickable markers that open photo galleries for each location
+- [ ] **Dark mode toggle** - Add theme switcher respecting `prefers-color-scheme`
+- [ ] **Blog section expansion** - Add more resources, potentially with a proper blog post format
+- [ ] **Search functionality** - Search across publications and teaching materials
+- [ ] **Publication filters** - Filter papers by year, topic, or venue
+
+### Low Priority / Nice to Have
+
+- [ ] **News/updates feed** - RSS or JSON feed of latest publications and updates
+- [ ] **Performance optimization** - Lazy load images, optimize font loading, add resource hints
+- [ ] **Print stylesheet** - Clean print version for CV and publications
+- [ ] **i18n support** - Multi-language support (if needed for international collaborations)
+- [ ] **Analytics dashboard** - Simple page view tracking visualization
+
+### Technical Debt
+
+- [ ] **Consolidate CSS** - Merge Webflow CSS with custom overrides where possible
+- [ ] **Semantic HTML audit** - Improve heading hierarchy and landmark regions
+- [ ] **Accessibility improvements** - Add skip links, improve color contrast, ARIA labels
+- [ ] **Meta tags** - Add Open Graph and Twitter card meta tags for link previews
+- [ ] **Structured data** - Add JSON-LD schema for publications (Scholar, academic profiles)
+
+### Content Updates
+
+- [ ] **Update publications** - Keep research section current with new papers
+- [ ] **Teaching materials** - Add new course content as available
+- [ ] **Profile photo** - Consider professional headshot update
+- [ ] **CV sync** - Ensure downloadable CV matches website content
+
+---
+
 ## Contributing / Feedback
 
 Open an issue or reach out via the contact details on the site if you notice accessibility problems, broken links, or have ideas for new features (e.g., additional research write-ups, teaching resources, or a news feed).
