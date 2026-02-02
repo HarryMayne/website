@@ -36,6 +36,173 @@ body.modal-open {
   outline-offset: 4px;
 }
 
+/* Paper thumbnails: stretch to match text height, remove shadow */
+.photo_in_grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  box-shadow: none;
+  width: auto;
+  height: auto;
+  align-self: stretch;
+}
+
+.photo_in_grid .image-7 {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Profile photo: force square aspect for circular crop on landscape images */
+.image-2 {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: 55% 25%;
+}
+
+/* Research section intro text */
+.research-intro {
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 0.2em;
+}
+
+.research-intro + .text-block-3 {
+  margin-top: 20px;
+}
+
+/* Override Webflow capitalize on publication text */
+.text-block-5,
+.link-4 {
+  text-transform: none;
+}
+
+/* Publication entry wrapper (replaces <a> to allow nested links) */
+.publication-entry {
+  display: contents;
+  color: inherit;
+}
+
+.publication-entry:hover .photo_in_grid {
+  opacity: 0.85;
+}
+
+/* Stack text and pill links vertically within the grid cell */
+.text_in_grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* Paper pill links row */
+.paper-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.paper-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+  line-height: 1.6;
+}
+
+/* Paper pill: warm beige */
+.pill-paper {
+  background-color: #e2d5c3;
+  color: #4a3d2e;
+}
+
+.pill-paper:hover {
+  background-color: #d4c4ad;
+}
+
+/* Code pill: green */
+.pill-code {
+  background-color: #c8debb;
+  color: #2d4a2d;
+}
+
+.pill-code:hover {
+  background-color: #b5d0a4;
+}
+
+/* Blog pill: purple */
+.pill-blog {
+  background-color: #d8c8eb;
+  color: #462a5e;
+}
+
+.pill-blog:hover {
+  background-color: #cbb8e2;
+}
+
+/* Website pill: blue */
+.pill-website {
+  background-color: #c3d5e6;
+  color: #2d3f52;
+}
+
+.pill-website:hover {
+  background-color: #b0c6db;
+}
+
+/* Inspect pill: rose */
+.pill-inspect {
+  background-color: #eac8cd;
+  color: #7a2838;
+}
+
+.pill-inspect:hover {
+  background-color: #dfb5bc;
+}
+
+/* YouTube pill: red */
+.pill-youtube {
+  background-color: #e8b8b8;
+  color: #7a1a1a;
+}
+
+.pill-youtube:hover {
+  background-color: #dca3a3;
+}
+
+/* News pill: amber/orange */
+.pill-news {
+  background-color: #e8d5a8;
+  color: #5a4418;
+}
+
+.pill-news:hover {
+  background-color: #dcc68e;
+}
+
+/* Remove excessive whitespace and horizontal lines between sections */
+.main-page-section {
+  min-height: auto;
+  max-height: none;
+}
+
+.offset,
+.offse_top {
+  height: 40px;
+  border: none;
+  border-bottom: none;
+}
+
+.heading-2 {
+  margin-top: 0;
+}
+
 /* Fix header underline to be more visible and consistent */
 .main-nav {
   border-bottom: none !important;

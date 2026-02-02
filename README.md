@@ -53,7 +53,7 @@ If you make changes, commit/push to `main`; GitHub Pages will redeploy automatic
 
 - [ ] **Interactive travel map** - World map showing places visited with clickable markers that open photo galleries for each location
 - [ ] **Dark mode toggle** - Add theme switcher respecting `prefers-color-scheme`
-- [ ] **Blog section expansion** - Add more resources, potentially with a proper blog post format
+- [ ] **Blog section expansion** - Integrate blog posts from Substack into the site; add more resources with a proper blog post format
 - [ ] **Search functionality** - Search across publications and teaching materials
 - [ ] **Publication filters** - Filter papers by year, topic, or venue
 
