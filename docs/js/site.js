@@ -11,13 +11,16 @@
       return;
     }
 
+    var nav = document.querySelector('.main-nav');
+    var navOffset = nav ? nav.offsetHeight : 0;
+    var startY = window.pageYOffset;
+    var targetY = startY + targetEl.getBoundingClientRect().top - navOffset;
+
     if (reduceMotionQuery.matches) {
-      targetEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+      window.scrollTo(0, targetY);
       return;
     }
 
-    var startY = window.pageYOffset;
-    var targetY = startY + targetEl.getBoundingClientRect().top;
     var distance = targetY - startY;
     var startTime = null;
 
