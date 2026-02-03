@@ -362,10 +362,392 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
   object-fit: cover;
 }
 
-@media screen and (max-width: 479px) {
+/* ===== Breakpoint 1: Tablet & Mobile (≤767px) ===== */
+@media screen and (max-width: 767px) {
+
+  /* Prevent any child from causing horizontal scroll */
+  .page-wrapper {
+    overflow-x: hidden;
+  }
+
+  /* --- Nav: Webflow switches from fixed to absolute with 3em padding --- */
+  .main-nav {
+    padding-top: 1.2em;
+    padding-bottom: 1.2em;
+  }
+
+  .div-block-10 {
+    flex-wrap: wrap;
+    height: auto;
+    justify-content: center;
+    margin-left: 0;
+    gap: 0;
+  }
+
+  /* Hide nav name + CV link on mobile (name is in hero, CV in About section) */
+  .name.w-nav-brand,
+  .cv.w-nav-brand {
+    display: none;
+  }
+
+  /* Reset margin that pushes menu right on desktop */
+  .main-nav__menu {
+    margin: 0;
+    width: 100%;
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .main-nav__links-wrap {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em 1.5em;
+  }
+
+  .logo-text {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* --- Hero: collapse 100vh, stack vertically, CENTER everything --- */
+  .first-page-container {
+    height: auto;
+  }
+
+  .div-block-7 {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding-top: 100px;
+    padding-bottom: 40px;
+  }
+
+  .first-page-div.gutter-outside-copy {
+    width: 85%;
+    max-width: 100%;
+    padding-right: 0;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero__grid-left.hero {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .intro {
+    align-items: center;
+    text-align: center;
+    padding-right: 0;
+  }
+
+  .title4.text-regular {
+    text-align: center;
+  }
+
+  .p-xs-end {
+    text-align: center;
+  }
+
+  .logos_wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .socials_logos {
+    justify-content: center;
+  }
+
+  .div-block-8 {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+  }
+
+  .div-block-8 .hero__grid-left.hero {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .image-2 {
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+  }
+
+  /* --- Content sections --- */
+  .div-block-4 {
+    width: 88%;
+    max-width: 100%;
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  /* Reduce section headings from 3.5em to something mobile-friendly */
+  .heading-2 {
+    font-size: 2.2em;
+    margin-bottom: -4px;
+  }
+
+  .text-block-3 {
+    text-align: left;
+    margin-top: 16px;
+  }
+
+  /* Reduce section spacing */
+  .offset,
+  .offse_top {
+    height: 20px;
+  }
+
+  .main-page-section {
+    padding-top: 0;
+  }
+
+  /* Remove scroller max-height so publications aren't cut off */
+  .scroller {
+    max-height: none;
+    overflow: visible;
+  }
+
+  /* About section grids → single column */
+  .grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .grid-3 .button.w-button {
+    margin-top: 4px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr !important;
+    grid-template: none !important;
+  }
+
+  .text-block-7 {
+    text-align: left;
+    margin-top: -4px;
+  }
+
+  /* Item-list (teaching/blog): 2-col → 1-col */
   .item-list {
     grid-column-gap: 16px;
-    grid-row-gap: 16px;
+    grid-row-gap: 28px;
     grid-template-columns: 1fr;
+  }
+
+  .item-list .photo_in_grid {
+    width: 100%;
+    height: 120px;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  /* --- Teaching sub-page modals → responsive --- */
+  .popup,
+  .popup-oxford {
+    width: 90vw;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    margin-top: 10vh;
+    overflow-y: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .popup-grid,
+  .popup-grid-area,
+  .popup-grid-d10 {
+    grid-template-columns: 1fr .75fr;
+    grid-template: none;
+    padding: 0 20px 20px;
+  }
+
+  .popup-grid-oxford,
+  .popup-grid-oxford-2,
+  .popup-grid-oxford-3 {
+    grid-template-columns: 1fr;
+    grid-template: none;
+    padding: 0 20px 20px;
+  }
+
+  /* Teaching sub-page cards */
+  .grid-5 img,
+  .grid-5-oxford img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .image-3 {
+    width: 150px;
+    height: 150px;
+  }
+
+  /* Sub-page nav offset: nav is now absolute, not fixed */
+  body > div:not(.page-wrapper) > section:first-of-type .offset {
+    height: 20px;
+  }
+}
+
+/* ===== Breakpoint 2: Small Mobile (≤479px) ===== */
+@media screen and (max-width: 479px) {
+
+  /* --- Nav: compact for narrow screens --- */
+  .main-nav {
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+  }
+
+  .div-block-10 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main-nav__links-wrap {
+    gap: 0.6em 1em;
+    justify-content: center;
+  }
+
+  .main-nav__link.light {
+    font-size: 0.75rem;
+  }
+
+  .logo-text {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 1em;
+  }
+
+  /* --- Hero --- */
+  .first-page-div.gutter-outside-copy {
+    width: 90%;
+  }
+
+  .div-block-8 {
+    width: 90%;
+  }
+
+  .image-2 {
+    max-width: 160px;
+  }
+
+  /* --- Content width: override Webflow min-width: 300px --- */
+  .div-block-4 {
+    min-width: 0;
+    width: 90%;
+  }
+
+  .research-intro {
+    font-size: 1.15em;
+    text-align: center;
+  }
+
+  .heading-5 {
+    font-size: 1em;
+    margin-top: 20px;
+    margin-bottom: 8px;
+  }
+
+  /* Left-align headings (override Webflow centering at 479px) */
+  .heading-2,
+  .heading-5 {
+    text-align: left;
+  }
+
+  /* Left-align publication & about text (must beat Webflow 479px centering) */
+  .text-block-5,
+  .text-block-8,
+  .text-block-11 {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .bold-text-3 {
+    text-align: left;
+  }
+
+  .text_in_grid {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .paper-links {
+    justify-content: flex-start;
+  }
+
+  .link-4 {
+    text-align: left !important;
+  }
+
+  /* --- Publications grid: fix 23px crush, keep 2-col compact layout --- */
+  .publications-grid {
+    grid-auto-rows: auto !important;
+    grid-auto-flow: row !important;
+    grid-row-gap: 24px;
+    grid-column-gap: 16px;
+    grid-template-areas: none !important;
+    grid-template-rows: auto !important;
+    grid-template-columns: 80px 1fr !important;
+    place-items: start !important;
+    justify-items: stretch !important;
+  }
+
+  .publications-grid .photo_in_grid {
+    width: 80px;
+    height: 80px;
+    max-width: none;
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    align-self: start;
+  }
+
+  .publications-grid .photo_in_grid .image-7 {
+    object-fit: cover;
+  }
+
+  /* Item-list (teaching/blog): compact thumbnails */
+  .item-list {
+    grid-row-gap: 24px;
+    grid-column-gap: 14px;
+    grid-template-columns: 70px 1fr;
+    place-items: start !important;
+    justify-items: stretch !important;
+  }
+
+  .item-list .photo_in_grid {
+    width: 70px;
+    height: 70px;
+    max-width: none;
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    align-self: start;
+  }
+
+  .item-list .photo_in_grid .image-7 {
+    object-fit: cover;
+  }
+
+  /* --- Popups: maximize usable space --- */
+  .popup,
+  .popup-oxford {
+    width: 95vw;
+    margin-top: 5vh;
+    max-height: 85vh;
+  }
+
+  .heading-7,
+  .heading-7-oxford {
+    font-size: 1.5em;
+    margin-left: 20px;
   }
 }
