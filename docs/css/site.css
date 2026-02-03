@@ -2,6 +2,10 @@ html.has-custom-js {
   scroll-behavior: auto;
 }
 
+body {
+  background-color: #f8eed8;
+}
+
 body.modal-open {
   overflow: hidden;
 }
@@ -36,13 +40,19 @@ body.modal-open {
   outline-offset: 4px;
 }
 
-/* Paper thumbnails: stretch to match text height, remove shadow */
-.photo_in_grid {
+/* Photo grids: remove Webflow shadow */
+.photo_in_grid,
+.photo_in_grid-oxford {
+  box-shadow: none;
+  background-color: #fff;
+}
+
+/* Main page grids: stretch thumbnails to match text height */
+.publications-grid .photo_in_grid,
+.item-list .photo_in_grid {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #fff;
-  box-shadow: none;
   width: auto;
   height: auto;
   align-self: stretch;
@@ -235,7 +245,7 @@ body.modal-open {
 .div-block-4 .text-block-3 a:not(.w-inline-block) {
   color: inherit;
   text-decoration: none;
-  background-color: #ead8c8;
+  background-color: #e2d5c3;
   padding: 2px 5px;
   border-radius: 3px;
   transition: background-color 0.15s ease;
@@ -244,7 +254,7 @@ body.modal-open {
 }
 
 .div-block-4 .text-block-3 a:not(.w-inline-block):hover {
-  background-color: #d9c4b0;
+  background-color: #d4c4ad;
 }
 
 /* Publication photo links */
@@ -256,7 +266,7 @@ body.modal-open {
 
 /* Download CV: boxed link style matching inline links */
 .button.w-button {
-  background-color: #ead8c8;
+  background-color: #e2d5c3;
   color: #333;
   border-radius: 3px;
   padding: 2px 10px;
@@ -267,7 +277,7 @@ body.modal-open {
 }
 
 .button.w-button:hover {
-  background-color: #d9c4b0;
+  background-color: #d4c4ad;
 }
 
 /* Read More links: boxed link style */
@@ -275,7 +285,7 @@ body.modal-open {
 .link-block-4 {
   color: #333;
   text-decoration: none;
-  background-color: #ead8c8;
+  background-color: #e2d5c3;
   padding: 2px 10px;
   border-radius: 3px;
   transition: background-color 0.15s ease;
@@ -284,7 +294,7 @@ body.modal-open {
 
 .link-block-12:hover,
 .link-block-4:hover {
-  background-color: #d9c4b0;
+  background-color: #d4c4ad;
 }
 
 .link-block-12 .paragraph-2,
@@ -306,4 +316,56 @@ body.modal-open {
   height: auto !important;
   padding-bottom: 4rem;
   background-color: var(--copy-bright);
+}
+
+/* Item list grid for teaching and blog sections (matches publications layout) */
+.item-list {
+  display: grid;
+  grid-column-gap: 40px;
+  grid-row-gap: 40px;
+  grid-template-columns: minmax(107px, .5fr) minmax(200px, 4fr);
+}
+
+/* About section: tighter spacing within subsections */
+.grid-2 {
+  grid-row-gap: 16px !important;
+}
+
+/* About section: align CV button column with dates column */
+.grid-3 {
+  grid-template-columns: 1fr .27fr !important;
+}
+
+/* About section: equal gaps above/below subheadings */
+.div-block-4 .heading-5 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+}
+
+/* Oral highlight: muted warm red */
+.oral-highlight {
+  color: #7a3535;
+  font-weight: 700;
+}
+
+/* Sub-pages: ensure content starts below fixed nav (90px tall) */
+body > div:not(.page-wrapper) > section:first-of-type .offset {
+  height: 100px;
+}
+
+/* Teaching sub-page grid images: fill squares */
+.grid-5 .photo_in_grid img,
+.grid-5-oxford .photo_in_grid img,
+.grid-5-oxford .photo_in_grid-oxford img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media screen and (max-width: 479px) {
+  .item-list {
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    grid-template-columns: 1fr;
+  }
 }
