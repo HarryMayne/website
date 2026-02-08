@@ -196,6 +196,40 @@ body.modal-open {
   background-color: #dcc68e;
 }
 
+/* Publications scroller: Apple/Anthropic-style minimal scrollbar */
+.scroller {
+  max-height: 50vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.scroller:hover {
+  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+}
+
+.scroller::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroller::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 2px;
+}
+
+.scroller:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.scroller::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 /* Remove excessive whitespace and horizontal lines between sections */
 .main-page-section {
   min-height: auto;
