@@ -352,12 +352,58 @@ body.modal-open {
   background-color: var(--copy-bright);
 }
 
-/* Item list grid for teaching and blog sections (matches publications layout) */
+/* Item list grid for teaching section (matches publications layout) */
 .item-list {
   display: grid;
   grid-column-gap: 40px;
   grid-row-gap: 40px;
   grid-template-columns: minmax(107px, .5fr) minmax(200px, 4fr);
+}
+
+/* Writing section: condensed list */
+.writing-list {
+  margin-top: 16px;
+}
+
+.writing-entry {
+  display: flex;
+  gap: 24px;
+  padding: 10px 0;
+  align-items: baseline;
+}
+
+.writing-date {
+  flex-shrink: 0;
+  width: 120px;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  color: #888;
+}
+
+.writing-info {
+  flex: 1;
+}
+
+.writing-title {
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a1a1a;
+  text-decoration: none;
+}
+
+.writing-title:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.writing-desc {
+  display: block;
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  color: #555;
+  margin-top: 3px;
+  line-height: 1.5;
 }
 
 /* About section: tighter spacing within subsections */
@@ -569,7 +615,7 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     margin-top: -4px;
   }
 
-  /* Item-list (teaching/blog): 2-col → 1-col */
+  /* Item-list (teaching): 2-col → 1-col */
   .item-list {
     grid-column-gap: 16px;
     grid-row-gap: 28px;
@@ -581,6 +627,17 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     height: 120px;
     max-width: 200px;
     margin: 0 auto;
+  }
+
+  /* Writing list: stack date above title on mobile */
+  .writing-entry {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .writing-date {
+    width: auto;
+    font-size: 13px;
   }
 
   /* --- Teaching sub-page modals → responsive --- */

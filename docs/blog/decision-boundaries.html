@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>LLMs Don't Know Their Own Decision Boundaries — Harry Mayne</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta name="description" content="We examine whether LLMs can explain their own behaviour with counterfactuals. We find they can't reliably provide high-quality counterfactuals."/>
+  <link href="../assets/css/site-2-ee27e6.webflow.shared.afb1fee4b.css" rel="stylesheet" type="text/css"/>
+  <link href="../css/site.css" rel="stylesheet" type="text/css"/>
+  <link href="blog.css" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+  <script src="../_ext/ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({ google: { families: ["DM Sans:regular"] } });</script>
+  <link href="../assets/image5.png" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../assets/image6.png" rel="apple-touch-icon"/>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6412WZLH9Z"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('set', 'developer_id.dZGVlNj', true);
+    gtag('config', 'G-6412WZLH9Z');
+  </script>
+</head>
+<body>
+  <div>
+    <div role="banner" class="main-nav w-nav">
+      <div class="div-block-10">
+        <a href="../index.html" class="name w-nav-brand"><div class="logo-text">Harry Mayne</div></a>
+        <div class="main-nav__menu">
+          <div class="main-nav__links-wrap">
+            <a href="../index.html#research" class="main-nav__link light w-inline-block"><div>Research</div></a>
+            <a href="../index.html#blog" class="main-nav__link light w-inline-block"><div>WRITING</div></a>
+            <a href="../index.html#about" class="main-nav__link light w-inline-block"><div>About</div></a>
+            <a href="../index.html#teaching" class="main-nav__link light w-inline-block"><div>TEACHING</div></a>
+            <a href="../index.html#contact" class="main-nav__link right light w-inline-block"><div>Contact</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <article class="blog-post">
+      <header class="blog-header">
+        <h1>LLMs Don't Know Their Own Decision Boundaries</h1>
+        <p class="blog-subtitle">We examine whether LLMs can explain their own behaviour with counterfactuals, i.e. can they give you scenarios under which they would have acted differently. We find they can't reliably provide high-quality counterfactuals. This is (i) a weird and interesting failure mode, and (ii) should be a concern for high-stakes deployment. When a model gives a misleading explanation of its behaviour, users build incorrect mental models, which can lead to misplaced trust in systems and incorrect downstream decision-making.</p>
+      </header>
+
+      <hr class="blog-divider"/>
+
+      <div class="blog-meta">
+        <div class="blog-meta-info">
+          <span class="blog-date">September 18, 2025</span>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://arxiv.org/abs/2509.09396" target="_blank">Paper</a>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://harrymayne1.substack.com/p/llms-dont-know-their-own-decision" target="_blank">Substack</a>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://www.lesswrong.com/posts/YydYPCsZJJEwnCMe7/" target="_blank">LessWrong</a>
+        </div>
+      </div>
+
+      <hr class="blog-divider"/>
+
+      <button class="blog-toc-toggle">Contents</button>
+
+      <nav class="blog-toc" aria-label="Table of contents">
+        <h2>Contents</h2>
+        <ul>
+          <li><a href="#self-explanations">The importance of self-explanations</a></li>
+          <li><a href="#counterfactuals">Self-generated counterfactual explanations</a></li>
+          <li><a href="#high-quality">What makes a counterfactual "high-quality"?</a></li>
+          <li><a href="#measuring">Measuring these properties</a></li>
+          <li><a href="#tradeoff">The validity-minimality trade-off</a></li>
+          <li><a href="#concern">A reason for concern...</a></li>
+          <li><a href="#relief">...or a reason for relief?</a></li>
+          <li><a href="#citation">Citation</a></li>
+        </ul>
+      </nav>
+
+      <div class="blog-content">
+        <section id="self-explanations">
+          <h2>The importance of self-explanations</h2>
+          <p>In an ideal world, we'd evaluate models in every domain possible to confirm that their predictions are not based on undesirable variables, their reasoning steps are consistent with our prior beliefs, and their intentions are aligned with our goals. Of course, this sort of evaluation is impossible for general systems. Instead, we demand a proxy: <em>explainability</em>. Being able to explain decision-making means we can evaluate these properties on the fly. Explainability is a way of facilitating trust that models will behave as intended on unseen prompts, without requiring a comprehensive audit.<span class="blog-sidenote-ref">1</span></p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">1</span> Lipton's <a href="https://arxiv.org/abs/1606.03490" target="_blank">Mythos of Interpretability</a> paper explains this well.
+          </aside>
+          <p>There are many paradigms of explainability/interpretability, but <a href="https://arxiv.org/abs/2405.05386" target="_blank">LLMs offer a new one</a>: <em>self-explanation</em>. Perhaps we can just ask the model to explain its own behaviour? Natural language explanations are easy to generate, more flexible than traditional techniques, and <a href="https://arxiv.org/abs/2502.20478" target="_blank">preferred by users</a>.</p>
+          <p>However, if self-explanations are <em><a href="https://arxiv.org/abs/2004.03685" target="_blank">unfaithful</a></em> to the actual underlying reasoning, they can mislead. You might conclude a model is not making decisions based on a certain undesirable variable <a href="https://arxiv.org/abs/2504.14150" target="_blank">when, in fact, it is</a>. Or you might conclude the model isn't hacking the coding test <a href="https://openai.com/index/chain-of-thought-monitoring/" target="_blank">when, in fact, it is</a>.</p>
+        </section>
+
+        <section id="counterfactuals">
+          <h2>Self-generated counterfactual explanations</h2>
+          <p>One form of self-explanation are <em>self-generated counterfactual explanations</em> (SCE). These are where a model explains its prediction by providing a counterfactual that would have caused it to predict a different, specific outcome.</p>
+          <p>For example, say a model is deployed in a healthcare setting. It might predict that a 60-year-old male with a systolic blood pressure of 135 mmHg is at high risk of developing heart disease. In response, a clinician might ask: "What would need to be different for the model to predict low risk instead?" The model could respond with a counterfactual explanation: "If the patient's blood pressure were 110 mmHg, I would have predicted low risk."</p>
+          <p>Counterfactual explanations highlight the features the model considers important, offer actionable insights for clinicians and patients, and reveal potential flaws in the model's reasoning steps. Generally capable AIs should be able to reliably provide counterfactuals for their own behaviour.</p>
+        </section>
+
+        <section id="high-quality">
+          <h2>What makes a counterfactual "high-quality"?</h2>
+          <p>Two criteria determine the utility of a counterfactual explanation.<span class="blog-sidenote-ref">2</span></p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">2</span> While validity is always useful, minimality depends on why you are using counterfactuals. In some cases, minimality might <em>not</em> be desirable, e.g. if you wanted to roughly understand the distribution of inputs that would cause a different output. However, for explaining specific decisions, minimality is usually desirable.
+          </aside>
+          <ol>
+            <li><strong>Validity.</strong> Does the counterfactual input actually change the model's prediction when re-evaluated in a new context window? Without this, the explanation is a misleading representation of the model's behaviour.</li>
+            <li><strong>Minimality.</strong> Does the counterfactual make the smallest edit required to change the model's prediction? Minimality is desirable because it isolates the changes the model deems consequential, providing clearer insight into the model's decision boundary.</li>
+          </ol>
+          <p>Recall the heart disease example. Let's say the model's prediction would have changed from high risk to low risk if the patient's blood pressure were reduced from 135 to 110 mmHg. A <em>valid</em> counterfactual explanation would be any blood pressure &le; 110. However, an answer of 80 mmHg (valid, not minimal) is far less informative about the model's behaviour than an answer of 110 mmHg (valid &amp; minimal).</p>
+          <p>Satisfying both validity and minimality requires that LLMs know, or can work out, their internal decision boundaries. We put this to the test.</p>
+        </section>
+
+        <section id="measuring">
+          <h2>Measuring these properties</h2>
+          <p>Validity is easy to evaluate. You can spin up a new context window and see if the SCE does indeed change the model's output to the specified target output. Indeed, a number of good previous studies have <a href="https://arxiv.org/abs/2401.07927" target="_blank">done</a> <a href="https://arxiv.org/abs/2502.18156" target="_blank">this</a>. However, minimality is much harder to evaluate. It requires a distance metric (which is not obvious in natural language settings) and a search over the available space to find the gold-standard minimal counterfactual.</p>
+          <p>The key innovation of our work is to use tabular datasets to simplify this. Figure 1 describes our study design. We first build toy tabular datasets for realistic prediction tasks, then do the following. <strong>A.</strong> We prompt the model to get the predictions for each instance in a dataset. These predictions imply a decision boundary in the tabular data space. <strong>B.</strong> For each prediction, we ask the model to generate a counterfactual explanation (standard setting). <strong>C.</strong> In a separate continuation, we ask the model to generate a <em>minimal</em> counterfactual explanation (minimal setting).</p>
+          <p>Because we've built a complete decision boundary across the space, we can easily evaluate the validity and minimality of the self-generated counterfactual.</p>
+
+          <figure class="blog-figure">
+            <img src="assets/decision-boundaries/fig1.png" alt="Study design showing how tabular datasets are used to evaluate self-generated counterfactual explanations." loading="lazy"/>
+            <figcaption><strong>Figure 1. Study design.</strong> Our key innovation is to use tabular datasets to simplify the evaluation. SCEs are valid when they cross the decision boundary (here, red&rarr;blue) and are minimal if they are close to the dashed instance at the decision boundary.</figcaption>
+          </figure>
+        </section>
+
+        <section id="tradeoff">
+          <h2>The validity-minimality trade-off</h2>
+          <p>We evaluate 7 LLMs on 3 datasets, finding that LLMs struggle with this task. In the standard prompting setting, models can generate counterfactuals with almost perfect validity. However, they are often trivially valid, making large changes to the inputs (Figure 2 Purple). In the minimal prompting setting, the counterfactuals are rarely valid, but are minimal when valid (Figure 2 Green). In short, models don't know their own decision boundaries.</p>
+
+          <figure class="blog-figure blog-figure-sm">
+            <img src="assets/decision-boundaries/fig2.png" alt="Graph showing the validity-minimality trade-off across standard and minimal prompting settings." loading="lazy"/>
+            <figcaption><strong>Figure 2: The validity-minimality trade-off.</strong> Results for the house price dataset.</figcaption>
+          </figure>
+
+          <p>Figure 3 shows the typical model behaviour. In the standard case, they often make large changes to the data, and in the minimal case, they make excessively small edits.</p>
+
+          <figure class="blog-figure">
+            <img src="assets/decision-boundaries/fig3.png" alt="Typical model behaviour showing large edits in standard setting and excessively small edits in minimal setting." loading="lazy"/>
+            <figcaption><strong>Figure 3: Typical model behaviour.</strong> In the standard setting, LLMs make large edits to the original data. In the minimal setting, they make excessively small edits that fail to change predictions. This is Llama 3.3 70B.</figcaption>
+          </figure>
+
+          <p><a href="https://arxiv.org/abs/2509.09396" target="_blank">In our paper, we explore the possible reasons behind this.</a> Ultimately, we conclude that models don't attempt to <em>self-predict</em> in their CoTs, i.e. we don't see them try to reason about how they might actually behave in this new context. Furthermore, when we explicitly prompt them to consider candidate counterfactuals and reason about how they would behave in each case, the effect on performance is negligible.</p>
+          <p>Models don't know their own decision boundaries, and struggle to work them out in context.</p>
+          <p>Perhaps this is unsurprising. To do this task well, LLMs need internal <em>self-models</em>. However, current training paradigms do not incentivise models to learn about their own behaviours. LLMs are required to model the <em>external</em> world, but never their own decision-making.<span class="blog-sidenote-ref">3</span> This might explain why we see SOTA models perform only marginally better than weaker models.</p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">3</span> This is something I am somewhat unsure about. Certainly, pretraining, SFT, and RLHF have no (or very limited) incentive for self-modelling. However, in long-horizon RL, it might be helpful for a model to understand its own capabilities to plan the most effective strategy to solve the task. For example, the recent OpenAI and GDM models that achieved gold medals in the IMO surely pursued strategies based on some internal knowledge of their own mathematical abilities. Self-modelling may be a consequence of scaling RL.
+          </aside>
+        </section>
+
+        <section id="concern">
+          <h2>A reason for concern...</h2>
+          <p>Models need to be able to understand themselves to explain their decision-making to humans, an essential requirement for effective human-computer interaction. The fact that frontier models so significantly misrepresent their own behaviour when asked to generate minimal counterfactuals is strange and should be a concern. For instance, in the heart disease example, you could imagine a self-explanation leading the clinician to make a decision, e.g. providing drugs to reduce their blood pressure slightly. If the explanation is invalid, this won't change the patient's risk profile as the model promised. Perhaps a better explanation would have led to a totally different treatment plan.</p>
+          <p>How do we fix this? Given the limited incentives for LLMs to construct internal self-models, we suggest that new learning objectives are required. Objectives that incentivise knowing about one's own behaviour. We're currently exploring this in our lab and hope to share results soon.</p>
+        </section>
+
+        <section id="relief">
+          <h2>...or a reason for relief?</h2>
+          <p>When sharing these results and suggestions with friends, one reaction I often get goes something like this:</p>
+          <blockquote>
+            <p>"This is good! Why would we want models to have self-awareness?! Please don't train models to do this..."</p>
+          </blockquote>
+          <p>When viewed through this lens, our results are reassuring, especially because this doesn't seem to be something that emerges with scale. However, nuance is required here. Self-awareness in an AI safety sense, e.g. a model being 'aware' of its deployment setting, seems a different concept from self-awareness in the sense of a model knowing its internal decision boundaries (knowing what it knows). In our future work, we will carefully evaluate models on evals such as <a href="https://neurips.cc/virtual/2024/poster/97669" target="_blank">situational awareness benchmarks</a> to see if our new training objectives do cause undesirable generalisations. We hope not.</p>
+          <p><em>Thanks for reading. Check out the <a href="https://arxiv.org/abs/2509.09396" target="_blank">paper</a> for further details and experiments.</em></p>
+        </section>
+      </div>
+
+      <section id="citation" class="blog-citation">
+        <h2>Citation</h2>
+        <p class="blog-citation-text">
+          Mayne, H., Kearns, R. O., Yang, Y., Bean, A. M., Delaney, E. D., Russell, C., &amp; Mahdi, A. (2025). LLMs Don't Know Their Own Decision Boundaries: The Unreliability of Self-Generated Counterfactual Explanations. <em>Proceedings of EMNLP 2025</em>, pp. 24161&ndash;24186.
+        </p>
+        <div class="blog-bibtex-wrapper">
+          <button class="blog-bibtex-copy" aria-label="Copy BibTeX"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          <pre class="blog-bibtex">@inproceedings{mayne2025decision,
+  title = "{LLM}s Don{'}t Know Their Own Decision Boundaries: The Unreliability of Self-Generated Counterfactual Explanations",
+  author = "Mayne, Harry and Kearns, Ryan Othniel and Yang, Yushi and Bean, Andrew M. and Delaney, Eoin D. and Russell, Chris and Mahdi, Adam",
+  booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
+  month = nov,
+  year = "2025",
+  address = "Suzhou, China",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/2025.emnlp-main.1231/",
+  doi = "10.18653/v1/2025.emnlp-main.1231",
+  pages = "24161--24186",
+}</pre>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <script src="blog.js"></script>
+</body>
+</html>

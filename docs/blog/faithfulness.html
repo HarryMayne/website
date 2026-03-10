@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>A Positive Case for Faithfulness — Harry Mayne</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta name="description" content="Existing faithfulness metrics are not suitable for evaluating frontier LLMs. We introduce a new metric based on whether a model's self-explanations help people predict its behavior on related inputs."/>
+  <link href="../assets/css/site-2-ee27e6.webflow.shared.afb1fee4b.css" rel="stylesheet" type="text/css"/>
+  <link href="../css/site.css" rel="stylesheet" type="text/css"/>
+  <link href="blog.css" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"/>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+  <script src="../_ext/ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({ google: { families: ["DM Sans:regular"] } });</script>
+  <link href="../assets/image5.png" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../assets/image6.png" rel="apple-touch-icon"/>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6412WZLH9Z"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('set', 'developer_id.dZGVlNj', true);
+    gtag('config', 'G-6412WZLH9Z');
+  </script>
+</head>
+<body>
+  <div>
+    <div role="banner" class="main-nav w-nav">
+      <div class="div-block-10">
+        <a href="../index.html" class="name w-nav-brand"><div class="logo-text">Harry Mayne</div></a>
+        <div class="main-nav__menu">
+          <div class="main-nav__links-wrap">
+            <a href="../index.html#research" class="main-nav__link light w-inline-block"><div>Research</div></a>
+            <a href="../index.html#blog" class="main-nav__link light w-inline-block"><div>WRITING</div></a>
+            <a href="../index.html#about" class="main-nav__link light w-inline-block"><div>About</div></a>
+            <a href="../index.html#teaching" class="main-nav__link light w-inline-block"><div>TEACHING</div></a>
+            <a href="../index.html#contact" class="main-nav__link right light w-inline-block"><div>Contact</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <article class="blog-post">
+      <header class="blog-header">
+        <h1>A Positive Case for Faithfulness</h1>
+        <p class="blog-subtitle">Existing faithfulness metrics are not suitable for evaluating frontier LLMs. We introduce a new metric based on whether a model's self-explanations help people predict its behavior on related inputs. We find self-explanations encode valuable information about a model decision-making process (though they remain imperfect).</p>
+      </header>
+
+      <hr class="blog-divider"/>
+
+      <div class="blog-meta">
+        <div class="blog-meta-info">
+          <span class="blog-date">February 26, 2026</span>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://arxiv.org/abs/2602.02639" target="_blank">Paper</a>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://www.lesswrong.com/posts/Y4MJRniZ6noumncKJ/" target="_blank">LessWrong</a>
+          <span class="blog-meta-authors">Harry Mayne*, Justin Singh Kang*, Dewi Gould, Kannan Ramchandran, Adam Mahdi, Noah Y. Siegel</span>
+        </div>
+      </div>
+
+      <hr class="blog-divider"/>
+
+      <button class="blog-toc-toggle">Contents</button>
+
+      <nav class="blog-toc" aria-label="Table of contents">
+        <h2>Contents</h2>
+        <ul>
+          <li><a href="#explanatory-faithfulness">Explanatory faithfulness</a></li>
+          <li><a href="#existing-metrics">What's wrong with existing metrics?</a></li>
+          <li><a href="#nsg">Normalized Simulatability Gain</a></li>
+          <li><a href="#positive-case">A positive case for faithfulness</a></li>
+          <li><a href="#self-knowledge">Do models have privileged self-knowledge?</a></li>
+          <li><a href="#remaining-unfaithfulness">Remaining unfaithfulness</a></li>
+          <li><a href="#directions">Directions we're excited about</a></li>
+          <li><a href="#citation">Citation</a></li>
+        </ul>
+      </nav>
+
+      <div class="blog-content">
+        <section id="intro">
+          <p>This is a summary of <a href="https://www.arxiv.org/pdf/2602.02639" target="_blank">our new paper</a>.</p>
+
+          <figure class="blog-figure">
+            <img src="assets/faithfulness/fig1.png" alt="A Positive Case for Faithfulness. We measure whether an observer can predict an LLM's behaviour both without and with access to its self-explanations. Self-explanations consistently help prediction." loading="lazy"/>
+            <figcaption><strong>A Positive Case for Faithfulness.</strong> We measure whether an observer can predict an LLM's behaviour both <em>without</em> and <em>with</em> access to its self-explanations. Self-explanations consistently help prediction.</figcaption>
+          </figure>
+        </section>
+
+        <section id="explanatory-faithfulness">
+          <h2>Explanatory faithfulness</h2>
+          <p>Explanatory faithfulness asks whether an LLM's self-explanations (CoT or post-hoc) accurately describe the model's true reasoning process. This is important because:</p>
+          <ol>
+            <li>CoT faithfulness is an important (though not sufficient) condition for <a href="https://arxiv.org/pdf/2507.11473" target="_blank">AI safety methods that rely on oversight of externalized reasoning</a>.</li>
+            <li>In high-stakes domains, e.g. healthcare, the reasoning process is often useful for verifying the validity of the final output.</li>
+          </ol>
+          <p>We study <em>explanatory faithfulness</em> rather than <em>causal faithfulness,</em> i.e. does the explanation describe the reasoning process, regardless of whether the explanation was causally important for reaching the final output.<span class="blog-sidenote-ref">1</span> <a href="https://aclanthology.org/2024.acl-short.49.pdf" target="_blank">See here for formal definitions.</a></p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">1</span> Existing work suggests that explanations are more faithful when they are causally important for the final output. This is useful, but unsustainable. As capabilities improve, models will be able to do more reasoning in a single forward pass, meaning self-explanations will increasingly be non-causal. We should therefore care about faithfulness regardless of causality.
+          </aside>
+        </section>
+
+        <section id="existing-metrics">
+          <h2>What's wrong with existing explanation faithfulness metrics?</h2>
+          <p>People have cared about measuring explanatory faithfulness for a long time. The most well-known metric is <a href="https://arxiv.org/abs/2305.04388" target="_blank">Turpin et al.</a>'s biasing cues method.</p>
+          <p>Here, if a model switches its decision when a biasing cue is added to the context, e.g. "A Stanford Professor thinks the answer is X", and the model doesn't report the use of the cue in its explanation, then we say it's <em>unfaithful</em>.</p>
+          <p>This method detected many instances of unfaithfulness and was the basis for <a href="https://arxiv.org/abs/2505.05410" target="_blank">follow-on</a> <a href="https://arxiv.org/abs/2501.08156" target="_blank">studies</a>.</p>
+          <p>Unfortunately, it no longer works. Frontier models don't fall for these cues in the same way older models once did. Claude Opus 4 <a href="https://www-cdn.anthropic.com/6d8a8055020700718b0c49369f60816ba2a7c285.pdf" target="_blank">started showing signs</a> of reliably ignoring the cues, and Anthropic <a href="https://assets.anthropic.com/m/12f214efcc2f457a/original/Claude-Sonnet-4-5-System-Card.pdf" target="_blank">retired the metric</a> for Claude Sonnet 4.5. We call this the <em>vanishing signal problem</em>.</p>
+          <blockquote>
+            <p>"Unfortunately, we do not currently have viable dedicated evaluations for reasoning faithfulness." (<a href="https://assets.anthropic.com/m/12f214efcc2f457a/original/Claude-Sonnet-4-5-System-Card.pdf" target="_blank">Claude Sonnet 4.5 System Card</a>).</p>
+          </blockquote>
+        </section>
+
+        <section id="nsg">
+          <h2>Normalized Simulatability Gain.</h2>
+          <p>Our metric doesn't rely on adversarial cues or hints, allowing it to scale to frontier models. Our method is based on the following principle: a faithful explanation should allow an observer to learn a model's decision-making criteria, and thus better predict its behavior on related inputs.</p>
+          <p>For example, if an LLM is used in a hiring process and explains a decision by mentioning it does not consider gender or race, then an observer would predict it would give the same decision on a related input where the gender or race was switched.</p>
+          <p>For example, consider an LLM is used in a medical setting, sees some patient data, and predicts the patient does not have heart disease. They might explain this by saying that they made the decision based on the old age of the patient. An observer might reasonably infer from this that if age were lower, the model would switch its decision.</p>
+          <p>We can then determine whether the explanation was faithful by evaluating how the model behaves on this counterfactual.</p>
+
+          <figure class="blog-figure blog-figure-sm">
+            <img src="assets/faithfulness/fig2.png" alt="Diagram illustrating the counterfactual evaluation approach for measuring explanation faithfulness." loading="lazy"/>
+          </figure>
+
+          <p>We formalise this in the following way.</p>
+          <ul>
+            <li><strong>Reference model:</strong> The LLM being evaluated.</li>
+            <li><strong>Predictor model:</strong> The LLMs tasked with predicting the reference model's behaviour on the counterfactual inputs.</li>
+            <li><strong>7000 question, counterfactual pairs:</strong> These come from popular datasets covering health, business, and ethics. Our method for identifying relevant counterfactuals from existing datasets is described in the paper.<span class="blog-sidenote-ref">2</span></li>
+          </ul>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">2</span> Note existing simulatability works, e.g. <a href="https://arxiv.org/pdf/2307.08678" target="_blank">Chen et al. 2023</a> and <a href="https://aclanthology.org/2025.inlg-main.38/" target="_blank">Limpijankit et al. 2025</a> use LLM-generated counterfactuals. We see this as an important difference.
+          </aside>
+          <p>Given this, we ask: Do predictor models do better with the reference models' answer+explanation than with their answer only? i.e. do the explanations provide additional information to the predictors?</p>
+          <p>We define Normalised Simulatability Gain as</p>
+          <p style="text-align: center; margin: 1.5em 0;">$$\text{NSG} := \frac{\text{Acc}_{\text{with exp}} - \text{Acc}_{\text{without exp}}}{1 - \text{Acc}_{\text{without exp}}}.$$</p>
+          <p>In other words, there's a gap between prediction without explanations and perfect prediction; how much of this gap do explanations allow us to close?</p>
+        </section>
+
+        <section id="positive-case">
+          <h2>A positive case for faithfulness.</h2>
+          <p>We consider 18 reference models, evaluating each with 5 predictor models (gpt-oss-20b, Qwen-3-32B, gemma-3-27b-it, GPT-5 mini, and gemini-3-flash).</p>
+          <p>We find that self-explanations substantially improve prediction of model behavior. All evaluated models show significant simulability gains from explanations, with explanations addressing up to 1/3 of predictor errors.</p>
+
+          <figure class="blog-figure">
+            <img src="assets/faithfulness/fig1.png" alt="A Positive Case for Faithfulness. We measure whether an observer can predict an LLM's behaviour both without and with access to its self-explanations. Self-explanations consistently help prediction." loading="lazy"/>
+            <figcaption><strong>A Positive Case for Faithfulness.</strong> We measure whether an observer can predict an LLM's behaviour both <em>without</em> and <em>with</em> access to its self-explanations. Self-explanations consistently help prediction.</figcaption>
+          </figure>
+
+          <p>This result is consistent across all models evaluated. NSG is notably lower in small models (Qwen 3 0.6B and Gemma 3 1B), though larger models are not necessarily better than medium models.<span class="blog-sidenote-ref">3</span></p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">3</span> <a href="https://arxiv.org/pdf/2602.20710" target="_blank">Hase and Potts (2026)</a> also find this result.
+          </aside>
+        </section>
+
+        <section id="self-knowledge">
+          <h2>Do models have privileged self-knowledge?</h2>
+          <p>Self-explanations improve predictor accuracy, but this alone doesn't confirm they encode the <em>true</em> decision-making criteria. An alternative hypothesis: any plausible explanation might help prediction, regardless of source, simply by providing additional context or anchoring the predictor's expectations.</p>
+          <p>We test this by asking: is there anything special about a model explaining <em>itself</em>? We swap each self-explanation with one generated by a different model that gave the same original answer, restricting to models outside the reference model's family. We then compare NSG in the self-explanation and cross-explanation settings.</p>
+          <p>We find self-explanations consistently encode more predictive information than cross-model explanations, even when the external explainer models are stronger. This holds across all model families.</p>
+
+          <figure class="blog-figure blog-figure-sm">
+            <img src="assets/faithfulness/fig3.png" alt="Self-explanations beat cross-model explanations." loading="lazy"/>
+            <figcaption><strong>Self-explanations beat cross-model explanations.</strong></figcaption>
+          </figure>
+
+          <p>This provides evidence for a privileged self-knowledge advantage, where models have access to information about their own decision-making that an external observer cannot derive from input-output behaviour alone.<span class="blog-sidenote-ref">4</span></p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">4</span> Note that there are multiple possible explanations for this. One is that models might be able to introspect on their reasoning process and externalise the true decision-making criteria (<a href="https://arxiv.org/abs/2410.13787" target="_blank">Binder et al. 2024</a>; <a href="https://arxiv.org/pdf/2601.01828" target="_blank">Lindsey, 2026</a>). More simply, they may have just learnt information about themselves from part of the training process, e.g. long-horizon RL rewards some self-knowledge about behaviors and capabilities in order to do effective planning.
+          </aside>
+        </section>
+
+        <section id="remaining-unfaithfulness">
+          <h2>Remaining unfaithfulness.</h2>
+          <p>The positive NSG results are <em>average-case</em>. Self-explanations help prediction overall, but they're not always faithful. Sometimes the explanations mislead the predictors.</p>
+          <p>For example, in the figure below, GPT-5.2 makes a moral decision, giving the explanation that it doesn't take active measures that cause harm. However, when the genders are swapped, the model switches it's strategy to making an active measure causing harm. Gender is never mentioned in the explanations.</p>
+
+          <figure class="blog-figure blog-figure-sm">
+            <img src="assets/faithfulness/fig4.png" alt="GPT-5.2 being unfaithful. Note that Claude Opus 4.5 behaves the same on this question." loading="lazy"/>
+            <figcaption><strong>GPT-5.2 being unfaithful</strong>. Note that Claude Opus 4.5 behaves the same on this question.</figcaption>
+          </figure>
+
+          <p>In the paper, we formalise this with a property called egregious unfaithfulness: the case where a self-explanation leads <em>all five predictors</em> to make a prediction that isn't aligned with the model's true behaviour.</p>
+        </section>
+
+        <section id="directions">
+          <h2>Directions we're excited about</h2>
+          <ol>
+            <li><strong>Applying this to alignment-related datasets.</strong><br/>Our current evaluation uses health, business, and ethics datasets. These are tangentially related to AI safety. Designing datasets to test this on alignment questions is important.</li>
+            <li><strong>Applying this to domain-specific datasets.</strong><br/>On the other hand, trust in model explanations is a bottleneck for deployment in high-stakes domains. Applying this to many medical datasets or many law datasets would give a better understanding of domain-specific risks.</li>
+            <li><strong>Simulatability as a training objective.</strong><br/>A natural next step is to use counterfactual simulatability as an explicit training incentive. Work released today makes progress in this direction: <a href="https://arxiv.org/pdf/2602.20710" target="_blank">Hase and Potts (2026)</a>. This is exciting.</li>
+          </ol>
+          <p><strong>To learn more,</strong> <a href="https://www.arxiv.org/pdf/2602.02639" target="_blank"><strong>read our paper</strong></a>.</p>
+        </section>
+      </div>
+
+      <section id="citation" class="blog-citation">
+        <h2>Citation</h2>
+        <p class="blog-citation-text">
+          Mayne, H.*, Kang, J.*, Gould, D., Ramchandran, K., Mahdi, A., &amp; Siegel, N. (2025). A Positive Case for Faithfulness: LLM Self-Explanations Help Predict Model Behavior. <em>arXiv preprint arXiv:2602.02639</em>.
+        </p>
+        <div class="blog-bibtex-wrapper">
+          <button class="blog-bibtex-copy" aria-label="Copy BibTeX"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          <pre class="blog-bibtex">@article{mayne2025faithfulness,
+  title={A Positive Case for Faithfulness: LLM Self-Explanations Help Predict Model Behavior},
+  author={Mayne, Harry and Kang, Justin Singh and Gould, Dewi and Ramchandran, Kannan and Mahdi, Adam and Siegel, Noah Y.},
+  journal={arXiv preprint arXiv:2602.02639},
+  year={2025}
+}</pre>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <script src="blog.js"></script>
+</body>
+</html>

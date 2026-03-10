@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>Are Recent LLMs Better at Reasoning, or Better at Memorizing? — Harry Mayne</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta name="description" content="By carefully designing a reasoning benchmark that counteracts memorization skills in LLMs, LingOly-TOO (L2) Benchmark challenges frontier models with unseen questions and answers and makes the case that LLMs are not consistent reasoning machines yet."/>
+  <link href="../assets/css/site-2-ee27e6.webflow.shared.afb1fee4b.css" rel="stylesheet" type="text/css"/>
+  <link href="../css/site.css" rel="stylesheet" type="text/css"/>
+  <link href="blog.css" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+  <script src="../_ext/ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({ google: { families: ["DM Sans:regular"] } });</script>
+  <link href="../assets/image5.png" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../assets/image6.png" rel="apple-touch-icon"/>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6412WZLH9Z"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('set', 'developer_id.dZGVlNj', true);
+    gtag('config', 'G-6412WZLH9Z');
+  </script>
+</head>
+<body>
+  <div>
+    <div role="banner" class="main-nav w-nav">
+      <div class="div-block-10">
+        <a href="../index.html" class="name w-nav-brand"><div class="logo-text">Harry Mayne</div></a>
+        <div class="main-nav__menu">
+          <div class="main-nav__links-wrap">
+            <a href="../index.html#research" class="main-nav__link light w-inline-block"><div>Research</div></a>
+            <a href="../index.html#blog" class="main-nav__link light w-inline-block"><div>WRITING</div></a>
+            <a href="../index.html#about" class="main-nav__link light w-inline-block"><div>About</div></a>
+            <a href="../index.html#teaching" class="main-nav__link light w-inline-block"><div>TEACHING</div></a>
+            <a href="../index.html#contact" class="main-nav__link right light w-inline-block"><div>Contact</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <article class="blog-post">
+      <header class="blog-header">
+        <h1>Are Recent LLMs Better at Reasoning, or Better at Memorizing?</h1>
+        <p class="blog-subtitle">By carefully designing a reasoning benchmark that counteracts memorization skills in LLMs, LingOly-TOO (L2) Benchmark challenges frontier models with unseen questions and answers and makes the case that LLMs are not consistent reasoning machines yet.</p>
+      </header>
+
+      <hr class="blog-divider"/>
+
+      <div class="blog-meta">
+        <div class="blog-meta-info">
+          <span class="blog-date">March 7, 2025</span>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://arxiv.org/abs/2503.02972" target="_blank">Paper (ICLR 2026)</a>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://www.lesswrong.com/posts/pbt8GYpdip7NkuwGy/" target="_blank">LessWrong</a>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://huggingface.co/spaces/jkhouja/lingoly-too" target="_blank">Leaderboard</a>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://huggingface.co/datasets/jkhouja/LingOly-TOO" target="_blank">Dataset</a>
+          <span class="blog-meta-authors">Jude Khouja, Lingyi Yang, Karolina Korgul, Simeon Hellsten, Vlad A. Neacsu, Harry Mayne, Ryan Othniel Kearns, Andrew M. Bean, Adam Mahdi</span>
+        </div>
+      </div>
+
+      <hr class="blog-divider"/>
+
+      <button class="blog-toc-toggle">Contents</button>
+
+      <nav class="blog-toc" aria-label="Table of contents">
+        <h2>Contents</h2>
+        <ul>
+          <li><a href="#do-llms-reason">Do recently announced LLMs reason?</a></li>
+          <li><a href="#unbiased-evaluation">The need for an unbiased evaluation of reasoning</a></li>
+          <li><a href="#l2-benchmark">LingOly-TOO (L2) Benchmark</a></li>
+          <li><a href="#unseen-problems">Can reasoning models solve unseen problems?</a></li>
+          <li><a href="#conclusion">Conclusion</a></li>
+          <li><a href="#citation">Citation</a></li>
+        </ul>
+      </nav>
+
+      <div class="blog-content">
+        <section id="do-llms-reason">
+          <figure class="blog-figure">
+            <img src="assets/lingoly-too/fig1.png" alt="LingOly-TOO Benchmark results from the paper. Unobfuscated scores are in light orange and obfuscated scores in dark orange." loading="lazy"/>
+            <figcaption><strong>Figure 1:</strong> LingOly-TOO Benchmark results from the paper. Unobfuscated scores are in light orange and obfuscated scores in dark orange.</figcaption>
+          </figure>
+
+          <h2>Do recently announced LLMs reason?</h2>
+          <p>By the time this post was published, a new wave of frontier models had been announced including ones specifically designed to reason using Inference Time Compute (ITC)<span class="blog-sidenote-ref">1</span>. Anthropic&#x2019;s Claude 3.7 Sonnet, OpenAI&#x2019;s o1, o3 and GPT 4.5 models, DeepSeek&#x2019;s R1 and others demonstrate impressive performance on several reasoning tasks that only few months ago were considered far from solvable<span class="blog-sidenote-ref">2</span><span class="blog-sidenote-ref">3</span><span class="blog-sidenote-ref">4</span>. This, rightfully, ignited conversations about an important question: Have we finally reached the era were models can do advanced reasoning?</p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">1</span> <a href="https://openai.com/index/learning-to-reason-with-llms/" target="_blank">https://openai.com/index/learning-to-reason-with-llms/</a>
+          </aside>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">2</span> D. Hendrycks, C. Burns, S. Basart, A. Zou, M. Mazeika, D. Song, and J. Steinhardt. Measuring massive multitask language understanding, 2021. URL <a href="https://arxiv.org/abs/2009.03300" target="_blank">https://arxiv.org/abs/2009.03300</a>.
+          </aside>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">3</span> D. Rein, B. L. Hou, A. C. Stickland, J. Petty, R. Y. Pang, J. Dirani, J. Michael, and S. R. Bowman. Gpqa: A graduate-level google-proof q&amp;a benchmark, 2023. URL <a href="https://arxiv.org/abs/2311.12022" target="_blank">https://arxiv.org/abs/2311.12022</a>.
+          </aside>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">4</span> <a href="https://arcprize.org/" target="_blank">https://arcprize.org/</a>
+          </aside>
+        </section>
+
+        <section id="unbiased-evaluation">
+          <h2>The need for an unbiased evaluation of reasoning</h2>
+          <p>A standard framework to answer such a question in the NLP domain is to use evaluation benchmarks that tests various reasoning skills via tasks which require a model to apply several sequential reasoning steps to reach the correct answer. The key to this approach is to select tasks and test cases that models have not had prior exposure to. This, in the era of LLMs, has proven to be a major challenge. In part because of the massive scale of training datasets which consists of trillions of words used in developing these models, but also because several of the frontier models are proprietary with little to no information about used training dataset that is available for the research community to take into account in their assessments. This consequently complicates objective evaluation of reasoning skills in LLMs. It also raises concerns that we might be over-estimating their capabilities in advanced reasoning.</p>
+        </section>
+
+        <section id="l2-benchmark">
+          <h2>LingOly-TOO (L2) Benchmark</h2>
+          <p>To address this, we need reasoning benchmarks with stronger guarantees that the chance of prior data exposure is minimal. This is exactly what our new benchmark LingOly-TOO targets. By extending an already challenging benchmark LingOly<span class="blog-sidenote-ref">5</span>&nbsp;which utilize low-resource languages taken from the UKLO Linguistics Olympiad, LingOly-TOO rewrites key parts of questions and answers to minimize the chance of model&#x2019;s reliance on their internal knowledge in answering.</p>
+          <aside class="blog-sidenote">
+            <span class="blog-sidenote-number">5</span> Bean, A. M., Hellsten, S., Mayne, H., Magomere, J., Chi, E. A., Chi, R. A., Hale, S. A., and Kirk, H. R. LINGOLY: A benchmark of olympiad-level linguistic reasoning puzzles in low resource and extinct languages. In The 38th Conference on Neural Information Processing Systems Datasets and Benchmarks Track, 2024. URL <a href="https://openreview.net/forum?id=cLga8GStdk" target="_blank">https://openreview.net/forum?id=cLga8GStdk</a>.
+          </aside>
+
+          <figure class="blog-figure">
+            <img src="assets/lingoly-too/fig2.png" alt="Diagram summarizing the development of LingOly-TOO (L2) Benchmark." loading="lazy"/>
+            <figcaption><strong>Figure 2:</strong> Diagram summarizing the development of LingOly-TOO (L2) Benchmark.</figcaption>
+          </figure>
+
+          <p>Each problem includes several questions such as translating a sentence from a source language to a destination language by inferring grammatical rules from provided examples. We generate multiple permutations (called obfuscations) of the relevant parts of the questions based on carefully designed rules for character swapping for that specific problem (referred to as an Orthographic Template). These obfuscated versions preserve the reasoning steps needed to answer the question but are written in different spellings than in the original language. Using this protocol, we are able to generate multiple versions of each problem all of which measure the same reasoning skill and require the same &#x201C;thinking logic&#x201D; by the model. For our experiments, we generate up to 6 obfuscations for each of the 82 problems. The benchmark in total includes over 1200 question-answer pairs but the framework allows for generating many more obfuscations if needed.</p>
+        </section>
+
+        <section id="unseen-problems">
+          <h2>Can reasoning models solve unseen problems?</h2>
+          <p>We evaluated 11 state-of-the-art models on our obfuscated data (Figure 1). Claude 3.7 achieved the best score with 43.6% exact match outperforming all other models we evaluated by a significant margin! Other models struggled on our tasks and scored below 31% indicating that L2 Benchmark is challenging even to state-of-the-art reasoning models. You can check the updated <a href="https://huggingface.co/spaces/jkhouja/lingoly-too" target="_blank">leaderboard</a> for results of all models.</p>
+
+          <figure class="blog-figure">
+            <img src="assets/lingoly-too/fig3.png" alt="Distribution of scores across 500 bootstrapped samples of our data by model. Each consists of 82 problems. Open source models are shown in orange while proprietary models are in blue." loading="lazy"/>
+            <figcaption><strong>Figure 3:</strong> Distribution of scores across 500 bootstrapped samples of our data by model. Each consists of 82 problems. Open source models are shown in orange while proprietary models are in blue.</figcaption>
+          </figure>
+
+          <p>We also compare the obfuscated vs. original data to test if models consistently apply the same reasoning over information in the prompts to generate their answers across all written forms. Our results suggest this is not always the case! All models perform noticeably better on unobfuscated versions than on obfuscated ones despite requiring identical reasoning steps (Figure 1). We also conducted a randomized controlled study on human participants and found that the average gap between the performance of obfuscated and unobfuscated questions is much smaller compared with LLMs.</p>
+          <p>This could be explained by the fact that LLMs utilize numerous prediction mechanism in answer generation including but not limited to reasoning. We test this hypothesis by removing critical context needed to solve the tasks and re-prompting models to answer the now unsolvable questions. Correct answers in this setting are, therefore, reached by chance, memorization skills, or means other than reasoning. When presented with the obfuscated version of these questions, o1-preview scored below 1% as expected. However, the model scored a much higher ~7% when the unsolvable questions were presented in their original spelling. It seems that when possible, models try to &#x201C;guess&#x201D; the answer using a form of memorization and internal knowledge learned from training data which tends to only work when the tasks are in their original written form. For example, we found examples where GPT-4o answers translation questions directly from knowledge of the language without using inductive reasoning on examples provided in context, effectively circumventing the reasoning pathway and using direct translation. The obfuscation procedure successfully counteracts this phenomenon and provides scores that better correlate with reasoning abilities on linguistics tasks.</p>
+          <p>All models exhibit performance variance across obfuscations as shown in Figure 3 which shows bootstrapped estimate of benchmark scores over multiple samples from the benchmark data. Interestingly, not all obfuscations have the same impact! Some models improve on obfuscated versions (blue areas in Figure 4). In few problems, the obfuscation has similar effect across several open and closed source models such in problems 45, 74, 144, and 178 in Figure 4. However, the gap between original and obfuscated questions tends to be larger for higher-resource languages.</p>
+
+          <figure class="blog-figure">
+            <img src="assets/lingoly-too/fig4.png" alt="Change in score due to obfuscation. Heatmap of changes in scores by model per problem. Red indicates a performance drop for that particular obfuscation, while blue indicates an improvement." loading="lazy"/>
+            <figcaption><strong>Figure 4:</strong> Change in score due to obfuscation. Heatmap of changes in scores by model per problem. Red indicates a performance drop for that particular obfuscation, while blue indicates an improvement.</figcaption>
+          </figure>
+        </section>
+
+        <section id="conclusion">
+          <h2>Conclusion</h2>
+          <p>LingOly-TOO Benchmark provides a measure of the reasoning abilities in LLMs. Results of state-of-the-art LLMs show that in general, the recent models are improving upon previous ones in reasoning. Specifically, ITC seems to help in linguistic reasoning even compared to larger size LLMs such as GPT 4.5. However, our results do show that memorization abilities of LLMs play a role in the prediction mechanisms of reasoning models. This opaque nature of prediction warrants further attention by the research community. Under what conditions do LLMs employ reasoning steps in response generation and when do they resort to memorization?</p>
+          <p>Finally, the obfuscation procedure provides a cautionary tail on the importance of controlling for confounders in measurement and proposes a more modest estimate of reasoning abilities in frontier models, for now.</p>
+          <p><em>Checkout the <a href="https://arxiv.org/abs/2503.02972" target="_blank">paper</a> and <a href="https://huggingface.co/spaces/jkhouja/lingoly-too" target="_blank">website</a> for more details about the obfuscation protocol, how the benchmark was developed, the human study and additional experiments on the impact of tokenization on reasoning performance!</em></p>
+        </section>
+      </div>
+
+      <section id="citation" class="blog-citation">
+        <h2>Citation</h2>
+        <p class="blog-citation-text">
+          Khouja, J., Korgul, K., Hellsten, S., Yang, L., Neacsu, V., Mayne, H., Kearns, R., Bean, A., &amp; Mahdi, A. (2026). LINGOLY-TOO: Disentangling Memorisation from Reasoning with Linguistic Templatisation and Orthographic Obfuscation. <em>Proceedings of the International Conference on Learning Representations (ICLR)</em>.
+        </p>
+        <div class="blog-bibtex-wrapper">
+          <button class="blog-bibtex-copy" aria-label="Copy BibTeX"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          <pre class="blog-bibtex">@inproceedings{khouja2025lingoly,
+  title={LINGOLY-TOO: Disentangling Memorisation from Reasoning with Linguistic Templatisation and Orthographic Obfuscation},
+  author={Khouja, Jude and Yang, Lingyi and Korgul, Karolina and Hellsten, Simeon and Neacsu, Vlad A. and Mayne, Harry and Kearns, Ryan Othniel and Bean, Andrew M. and Mahdi, Adam},
+  booktitle={Proceedings of the International Conference on Learning Representations (ICLR)},
+  year={2026}
+}</pre>
+        </div>
+      </section>
+    </article>
+  </div>
+
+  <script src="blog.js"></script>
+</body>
+</html>

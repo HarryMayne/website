@@ -97,6 +97,17 @@ See `ISSUE_MISSING_ASSETS.md` for missing files:
 - Preserve Webflow class naming conventions
 - Test across pages when modifying shared CSS/JS
 - Ensure accessibility (keyboard navigation, screen readers)
+- **Never use em-dashes** (---, &mdash;). Use commas, semicolons, or en-dashes instead.
+- **Use LaTeX for equations** in blog posts. Include KaTeX via CDN in the `<head>` and use `$$...$$` for display math, `\(...\)` for inline math.
+
+## Blog Posts
+
+Blog posts live in `docs/blog/` with shared `blog.css` and `blog.js`. Post assets go in `docs/blog/assets/<post-slug>/`.
+
+### Figures
+- **Background removal**: All figure images should have white backgrounds removed (made transparent) so they blend with the site's beige background. Use PIL/Pillow with a threshold of R,G,B > 240 to identify white pixels and set alpha to 0.
+- **Click-to-expand lightbox**: All `.blog-figure img` elements are clickable. Clicking opens a full-screen overlay showing the image larger. Click anywhere to close (no close button). This is handled automatically by `blog.js`.
+- Use `blog-figure-sm` class for smaller charts/diagrams.
 
 ## Deployment
 

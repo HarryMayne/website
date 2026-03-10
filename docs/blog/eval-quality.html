@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>AI Safety Researchers Should Care About Eval Quality — Harry Mayne</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <meta name="description" content="A theory of change for AI safety evals: why eval quality matters for efficient resource allocation, and how hype and scary demos distort this mechanism."/>
+  <link href="../assets/css/site-2-ee27e6.webflow.shared.afb1fee4b.css" rel="stylesheet" type="text/css"/>
+  <link href="../css/site.css" rel="stylesheet" type="text/css"/>
+  <link href="blog.css" rel="stylesheet" type="text/css"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin="anonymous"/>
+  <script src="../_ext/ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+  <script type="text/javascript">WebFont.load({ google: { families: ["DM Sans:regular"] } });</script>
+  <link href="../assets/image5.png" rel="shortcut icon" type="image/x-icon"/>
+  <link href="../assets/image6.png" rel="apple-touch-icon"/>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-6412WZLH9Z"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('set', 'developer_id.dZGVlNj', true);
+    gtag('config', 'G-6412WZLH9Z');
+  </script>
+</head>
+<body>
+  <div>
+    <div role="banner" class="main-nav w-nav">
+      <div class="div-block-10">
+        <a href="../index.html" class="name w-nav-brand"><div class="logo-text">Harry Mayne</div></a>
+        <div class="main-nav__menu">
+          <div class="main-nav__links-wrap">
+            <a href="../index.html#research" class="main-nav__link light w-inline-block"><div>Research</div></a>
+            <a href="../index.html#blog" class="main-nav__link light w-inline-block"><div>WRITING</div></a>
+            <a href="../index.html#about" class="main-nav__link light w-inline-block"><div>About</div></a>
+            <a href="../index.html#teaching" class="main-nav__link light w-inline-block"><div>TEACHING</div></a>
+            <a href="../index.html#contact" class="main-nav__link right light w-inline-block"><div>Contact</div></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <article class="blog-post">
+      <header class="blog-header">
+        <h1>AI Safety Researchers Should Care About Eval Quality</h1>
+        <p class="blog-subtitle">Recently, UK AISI published "Lessons from a Chimp: AI 'Scheming' and the Quest for Ape Language", a critique of the scheming evals literature. This post articulates why eval quality matters: evals guide the allocation of scarce AI safety resources, and low-quality evals distort this mechanism.</p>
+      </header>
+
+      <hr class="blog-divider"/>
+
+      <div class="blog-meta">
+        <div class="blog-meta-info">
+          <span class="blog-date">August 28, 2025</span>
+          <span class="blog-meta-sep">&middot;</span>
+          <a href="https://harrymayne1.substack.com/p/ai-safety-researchers-should-care" target="_blank">Substack</a>
+        </div>
+      </div>
+
+      <hr class="blog-divider"/>
+
+      <button class="blog-toc-toggle">Contents</button>
+
+      <nav class="blog-toc" aria-label="Table of contents">
+        <h2>Contents</h2>
+        <ul>
+          <li><a href="#theory-of-change">A theory of change for evals</a></li>
+          <li><a href="#enumerate">Step 1: Enumerate the threats</a></li>
+          <li><a href="#quantify">Step 2: Quantify severity levels</a></li>
+          <li><a href="#allocate">Step 3: Allocate resources efficiently</a></li>
+          <li><a href="#distortion">Hype and 'scary demos' distort this mechanism</a></li>
+          <li><a href="#counterargument">A counterargument</a></li>
+        </ul>
+      </nav>
+
+      <div class="blog-content">
+        <section id="theory-of-change">
+          <h2>A theory of change for evals</h2>
+          <p>Recently, UK AISI published "<em>Lessons from a Chimp: AI 'Scheming' and the Quest for Ape Language</em>", a critique of the scheming evals literature. Predictably, this has been met with a mixed response. Some have said this is a summary of the <a href="https://x.com/SashaMTL/status/1946117313339527413" target="_blank">issues many researchers have had with AI safety evals for years</a>, with others, privately, arguing the paper misses the point.</p>
+          <p>It is hard to argue against the paper's core recommendations. Good evals shouldn't rely on anecdotal evidence; good evals should have suitable control conditions; good evals should carefully define the concept being tested; and good evals shouldn't exaggerate findings. These are relatively uncontroversial. I suspect that the disagreement is over (i) the extent to which these apply to the scheming literature, and (ii) the <em>importance</em> of eval quality.</p>
+          <p>AISI's paper takes a good stab at showing why this applies to the scheming literature, which one may agree or disagree with (see <a href="https://www.lesswrong.com/posts/HE3Styo9vpk7m8zi4/evhub-s-shortform?commentId=KxCmCHkQzZPgJbc9E" target="_blank">Evan Hubinger's take</a>). However, it regrettably gives little attention to the importance of eval quality, writing as if this is common wisdom.</p>
+          <p>I suspect most people in AI safety would find it hard to articulate precisely why this matters. This post is my attempt to do so.</p>
+          <p>To start, here is my theory of change for evals.</p>
+        </section>
+
+        <section id="enumerate">
+          <h2>Step 1: Enumerate the threats</h2>
+          <p>Together, AI safety evals are a list of threats we might care about. A threat makes it onto the list if there is an <em>existence proof</em>. This requires evidence of a capability (the ability to do something) rather than claims about the propensity (the AI's willingness or likelihood of doing it). Many papers have explicitly tried to play this enumeration role, e.g. Google's <a href="https://arxiv.org/pdf/2305.15324" target="_blank">Evaluating Frontier Models for Dangerous Capabilities</a>, culminating in taxonomies like the <a href="https://airisk.mit.edu/" target="_blank">MIT AI Risk Repository</a>.</p>
+        </section>
+
+        <section id="quantify">
+          <h2>Step 2: Quantify severity levels</h2>
+          <p>Once we know what threats we should care about, we need to know <em>how much</em> to care about them. In other words, we need to quantify the severity of each threat.</p>
+          <p>We do this by measuring the <em>propensity</em> of a threat. How often might this behaviour emerge in a deployment-like scenario? How difficult is it to elicit this behaviour? The propensity, combined with the impact of the threat, informs us of the severity.</p>
+        </section>
+
+        <section id="allocate">
+          <h2>Step 3: Allocate resources efficiently</h2>
+          <p>Finally, we can efficiently allocate AI safety resources to mitigate them.</p>
+          <p>Here, it is helpful to view AI safety as a resource allocation problem. There are fewer researchers than optimal, grants get more applications than they can fund, etc. Evals are a mechanism to direct the allocation of scarce resources, whether that be in a centralised or decentralised way. They help assign resources to the issues with the highest marginal benefit.</p>
+          <p>AI safety evals are particularly important compared to other evals because the consequences of misallocation are more severe. Society needs the field to be <em>allocatively efficient</em> to make progress as fast as possible.</p>
+        </section>
+
+        <section id="distortion">
+          <h2>Hype and 'scary demos' distort this mechanism</h2>
+          <p>So where can this go wrong? Under this theory, we need evals to accurately reflect severity to guide resource allocation. If this is the case, the mechanism works perfectly.</p>
+          <p>To use the example of scheming, if a new eval shows a particularly high propensity of scheming, it will no doubt inspire more technical research on preventing scheming and more grants to fund this research.</p>
+          <p>This is ideal.</p>
+          <p>However, if an eval misrepresents the true severity of a threat, it will distort the mechanism at the cost of researching other threats. Returning to the critiques in the paper, if a scheming eval shows models behaving badly, but can't separate bad behaviour caused by malicious misalignment from a more benign mechanism, e.g. instruction following, it would be an overclaim to suggest there is likely a high propensity of scheming in real deployment scenarios.</p>
+          <p>In short, good evals cause justifiable shifts in resources; bad evals cause misallocation. Since AISI takes an active role in setting the AI safety agenda, it is unsurprising that they're making these critiques.</p>
+        </section>
+
+        <section id="counterargument">
+          <h2>A counterargument</h2>
+          <p>There is a counterargument that anecdotal evidence or so-called 'scary demos' can be useful for bringing more funding into the field, therefore expanding the total resources available. The argument goes:</p>
+          <blockquote>
+            <p>"Yes, some evals may overstate the propensity of a threat, distorting the allocation mechanism, but so what! Who cares! The increase in talent and funding offsets this and the net effect is positive."</p>
+          </blockquote>
+          <p>Some AI safety researchers, particularly those with short timelines, actively advocate for this approach. It's hard to quantify the net effect, but I'd expect this to be positive: scary demos probably do increase resources more than they distort the allocation mechanism!</p>
+          <p>However, we're not factoring in all the costs.</p>
+          <p>First, systematically overestimating the true propensity of a risk in pursuit of funding risks the long-term credibility of the field in the eyes of funders and the general public.</p>
+          <p>Second, additional resources are likely funnelled into specific threats, and any rebalancing is slow. Scheming demos are unlikely to cause more resources to flow into societal impacts work.</p>
+          <p>Third, low-quality evals make it harder to measure progress. The quest of AI safety is ultimately not just to evaluate risks, but to mitigate them. Getting signal on technical progress requires rigorous scientific measurement.</p>
+          <p>Everyone in AI safety wants the field to progress as fast as possible, but if we are to do this sustainably, we must focus on making high-quality evals!</p>
+          <p><em>Thanks to Ryan Othniel Kearns, Ze Shen, and Nikita Ostrovsky for insightful discussions about these ideas.</em></p>
+        </section>
+      </div>
+    </article>
+  </div>
+
+  <script src="blog.js"></script>
+</body>
+</html>
