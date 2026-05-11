@@ -1,0 +1,10 @@
+# Blog editor
+docs/blog/.drafts/
+docs/blog/.editor/
+tools/blog-editor/node_modules/
+tools/blog-editor/dist/
+tools/blog-editor/vendor/
+tools/blog-editor/data/
+
+# Brainstorming visual companion mockups
+.superpowers/

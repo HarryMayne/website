@@ -339,9 +339,13 @@
   max-width: 90%;
 }
 
-/* Smaller figure variant */
+/* Smaller figure variants */
 .blog-figure-sm img {
   max-width: 75%;
+}
+
+.blog-figure-md img {
+  max-width: 55%;
 }
 
 .blog-figure figcaption {
@@ -483,7 +487,8 @@
     scroll-margin-top: 80px;
   }
 
-  .blog-figure-sm img {
+  .blog-figure-sm img,
+  .blog-figure-md img {
     max-width: 100%;
   }
 

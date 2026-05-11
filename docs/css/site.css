@@ -442,6 +442,404 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
   object-fit: cover;
 }
 
+/* ===== Publications redesign ===== */
+
+/* Cap the research section at 760px on very wide viewports so the publications
+   list doesn't get wider than the featured card (which is fixed at 760). Below
+   ~1520px viewport, parent stays at the default 50% and the card breaks out
+   beyond it. Above, the section caps and card+list line up at the same width. */
+#research ~ .div-block-4 {
+  max-width: 760px;
+}
+
+/* Drop the scroller cap inside the research section — the new layout has its
+   own visual hierarchy and shouldn't be hidden behind a 50vh scrollbox. */
+#research ~ .div-block-4 .scroller {
+  max-height: none;
+  overflow: visible;
+}
+
+.featured-paper {
+  background: #efe2c8;
+  border-radius: 6px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
+  /* Card is fixed at 760px. With grid gap 64 and padding 28 each side, the
+     text and figure columns stay at 272 / 368 — the calibrated sizes where
+     description height equals image height. The extra width over the standard
+     parent (640) becomes whitespace between the columns. Centered via calc. */
+  width: 760px;
+  margin-left: calc((100% - 760px) / 2);
+}
+
+.featured-paper__chip {
+  display: block;
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: 0.04em;
+  margin: 0 0 8px 0;
+}
+
+.featured-paper__title {
+  font-family: Manrope, sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.018em;
+  color: #2a2520;
+  margin: 0 0 14px 0;
+}
+
+.featured-paper__top-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 64px;
+  align-items: stretch;
+  margin-bottom: 14px;
+}
+
+.featured-paper__desc {
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #3a3127;
+  margin: 0;
+  text-align: left;
+}
+
+.featured-paper__figure {
+  display: flex;
+  align-items: flex-end;       /* image bottom = column bottom = text bottom */
+  justify-content: flex-end;   /* image right = column right = card right */
+  overflow: visible;
+}
+
+.featured-paper__figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+  mix-blend-mode: multiply;
+  /* Visually enlarge from bottom-right corner without affecting layout — image
+     extends up and left into the gap, but the column stays at its natural size
+     so the description column doesn't stretch with it. */
+  transform: scale(1.15);
+  transform-origin: bottom right;
+}
+
+.featured-paper__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(42, 37, 32, 0.1);
+}
+
+.featured-paper__meta-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+.featured-paper__authors {
+  font-family: Manrope, sans-serif;
+  font-size: 13px;             /* matches publication-list authors */
+  line-height: 1.3;
+  color: #3a3127;
+  margin: 0;
+}
+
+.featured-paper__authors strong {
+  color: #2a2520;
+  font-weight: 700;
+}
+
+.featured-paper__affil {
+  font-family: Manrope, sans-serif;
+  font-size: 11.5px;
+  color: #6b5d4a;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.featured-paper__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+/* Pill override: scoped to publications redesign so teaching pages keep current colors */
+.featured-paper .paper-pill,
+.publications-list .paper-pill {
+  background-color: #fdf8e9;
+  color: #4a3d2e;
+  border: 1px solid #d6c39a;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-family: Manrope, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.featured-paper .paper-pill:hover,
+.publications-list .paper-pill:hover {
+  background-color: #f5ebcf;
+  border-color: #c9b48a;
+}
+
+.publications-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.publication-row {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 24px;
+  padding: 22px 0;
+  border-bottom: 1px solid #e2d5c3;
+  align-items: start;
+}
+
+.publication-row:last-child {
+  border-bottom: none;
+}
+
+.publication-row__thumb {
+  width: 100px;
+  height: 100px;               /* fixed square — bg color set per-image inline */
+  background: transparent;     /* default; each thumb sets its own bg via inline style */
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.publication-row__thumb a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.publication-row__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.publication-row__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.publication-row__title {
+  font-family: Manrope, sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #2a2520;
+  line-height: 1.35;
+  margin: 0 0 4px 0;
+}
+
+.publication-row__authors {
+  font-family: Manrope, sans-serif;
+  font-size: 13px;
+  color: #3a3127;
+  line-height: 1.5;
+}
+
+.publication-row__authors strong {
+  color: #2a2520;
+  font-weight: 700;
+}
+
+.publication-row__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.publication-row__venue {
+  text-align: right;
+  padding-top: 3px;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.publication-row__venue-text {
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #000;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.publication-row__accolade {
+  font-family: Manrope, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #b8923f;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.publication-row__sub-venue {
+  font-family: Manrope, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #6b5d4a;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Publications redesign: collapse to vertical layout below ~1000px viewport.
+   Below 1000, the card no longer fits comfortably with the side-by-side layout
+   and the breakout, so the figure stacks under the text and the transform is
+   removed. The list rows also switch to thumb+text on top, venue below. */
+@media screen and (max-width: 999px) {
+  .featured-paper {
+    padding: 24px 26px;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .featured-paper__top-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .featured-paper__figure {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .featured-paper__figure img {
+    transform: none;          /* drop the bottom-right scale-up */
+    width: 100%;
+    max-width: 600px;         /* don't blow up huge on tablet */
+    margin: 0 auto;
+  }
+
+  .featured-paper__footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .publication-row {
+    grid-template-columns: 84px 1fr;
+    grid-template-areas:
+      "thumb text"
+      "venue venue";
+    gap: 14px 16px;
+    padding: 20px 0;
+    align-items: start;
+  }
+
+  .publication-row__thumb {
+    grid-area: thumb;
+    width: 84px;
+    height: 84px;
+    align-self: start;
+  }
+
+  .publication-row__text {
+    grid-area: text;
+  }
+
+  .publication-row__venue {
+    grid-area: venue;
+    min-width: 0;
+    align-items: flex-start;
+    text-align: left;
+    padding-top: 0;
+    padding-left: 100px;
+  }
+}
+
+/* Tablet & mobile: tighter padding, smaller title, smaller thumbs */
+@media screen and (max-width: 767px) {
+  .featured-paper {
+    padding: 22px 20px;
+  }
+
+  .featured-paper__title {
+    font-size: 20px;
+  }
+
+  .featured-paper__desc {
+    font-size: 14px;
+  }
+
+  .featured-paper__top-grid {
+    gap: 18px;
+  }
+
+  .publication-row {
+    grid-template-columns: 64px 1fr;
+    gap: 14px 16px;
+    padding: 18px 0;
+  }
+
+  .publication-row__thumb {
+    width: 64px;
+    height: 64px;
+  }
+
+  .publication-row__venue {
+    padding-left: 80px;
+  }
+}
+
+/* Small mobile */
+@media screen and (max-width: 479px) {
+  .featured-paper {
+    padding: 20px 16px;
+  }
+
+  .featured-paper__title {
+    font-size: 18px;
+  }
+
+  .featured-paper__desc {
+    font-size: 13.5px;
+  }
+
+  .featured-paper__pills .paper-pill,
+  .publications-list .paper-pill {
+    padding: 4px 10px;
+    font-size: 11px;
+  }
+
+  .publication-row {
+    grid-template-columns: 56px 1fr;
+    gap: 12px 14px;
+  }
+
+  .publication-row__thumb {
+    width: 56px;
+    height: 56px;
+  }
+
+  .publication-row__venue {
+    padding-left: 70px;
+  }
+}
+
 /* ===== Breakpoint 1: Tablet & Mobile (≤767px) ===== */
 @media screen and (max-width: 767px) {
 
