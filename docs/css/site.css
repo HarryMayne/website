@@ -494,9 +494,9 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
 
 .featured-paper__top-grid {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 64px;
-  align-items: stretch;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 40px;
+  align-items: start;
   margin-bottom: 14px;
 }
 
@@ -511,9 +511,10 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
 
 .featured-paper__figure {
   display: flex;
-  align-items: flex-end;       /* image bottom = column bottom = text bottom */
-  justify-content: flex-end;   /* image right = column right = card right */
+  align-items: flex-start;
+  justify-content: flex-end;
   overflow: visible;
+  padding-top: 3px;
 }
 
 .featured-paper__figure img {
@@ -521,11 +522,6 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
   height: auto;
   display: block;
   mix-blend-mode: multiply;
-  /* Visually enlarge from bottom-right corner without affecting layout — image
-     extends up and left into the gap, but the column stays at its natural size
-     so the description column doesn't stretch with it. */
-  transform: scale(1.15);
-  transform-origin: bottom right;
 }
 
 .featured-paper__footer {
