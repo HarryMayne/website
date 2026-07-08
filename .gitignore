@@ -8,3 +8,6 @@ tools/blog-editor/data/
 
 # Brainstorming visual companion mockups
 .superpowers/
+
+# Overleaf CV (separate git repo, synced directly with Overleaf)
+cv/
