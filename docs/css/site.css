@@ -70,6 +70,11 @@ body.modal-open {
   width: 100%;
 }
 
+/* Breathing room between the hero subtitle and the social icons */
+.intro .logos_wrapper {
+  margin-top: 22px;
+}
+
 /* Profile photo: force square aspect for circular crop on landscape images */
 .image-2 {
   aspect-ratio: 1 / 1;
@@ -853,14 +858,6 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
 .vl-roll.vl-fall {
   transform: translateY(-150px); /* 10 rows x 15px: 55% down to 45% */
   transition: transform 2.8s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .vl-inject,
-  .vl-arrow,
-  .vl-roll {
-    transition: none !important;
-  }
 }
 
 .vl-roll span {
