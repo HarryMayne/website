@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Blog Editor - Drafts</title>
+  <link rel="stylesheet" href="/css/editor.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="dashboard-body">
+  <header class="dashboard-header">
+    <h1 class="dashboard-title">Blog Editor</h1>
+    <p class="dashboard-subtitle">Drafts for harrymayne.com</p>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="new-draft-bar">
+      <input type="text" id="new-draft-slug" class="new-draft-input" placeholder="new-post-slug" />
+      <button id="new-draft-btn" class="btn btn-primary">+ New Draft</button>
+    </div>
+
+    <div id="drafts-grid" class="drafts-grid">
+      <div class="empty-state">Loading...</div>
+    </div>
+  </main>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

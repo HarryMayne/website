@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Preview</title>
+  <style>
+    body { margin: 0; padding: 0; }
+    .preview-bar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      background: #7a3535; color: #fff; padding: 8px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: Manrope, sans-serif; font-size: 13px;
+    }
+    .preview-bar a { color: #fff; text-decoration: underline; }
+    .preview-bar button {
+      background: rgba(255,255,255,0.2); color: #fff; border: none;
+      padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 13px;
+    }
+    .preview-bar button:hover { background: rgba(255,255,255,0.3); }
+    iframe {
+      border: none; width: 100%; height: calc(100vh - 40px);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-bar">
+    <span>Preview mode</span>
+    <div>
+      <button onclick="location.href='/editor.html?slug='+slug">Back to editor</button>
+    </div>
+  </div>
+  <iframe id="preview-frame"></iframe>
+
+  <script>
+    const params = new URLSearchParams(window.location.search)
+    const slug = params.get('slug')
+    if (!slug) { document.body.textContent = 'No slug provided'; }
+    else {
+      document.getElementById('preview-frame').src = `/api/drafts/${encodeURIComponent(slug)}/preview`
+    }
+  </script>
+</body>
+</html>

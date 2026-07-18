@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="editor-html">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Blog Editor</title>
+  <!-- Blog styles for authentic rendering -->
+  <link href="/docs/assets/css/site-2-ee27e6.webflow.shared.afb1fee4b.css" rel="stylesheet"/>
+  <link href="/docs/css/site.css" rel="stylesheet"/>
+  <link href="/docs/blog/blog.css" rel="stylesheet"/>
+  <!-- KaTeX for math rendering -->
+  <link rel="stylesheet" href="/vendor/katex/katex.min.css"/>
+  <!-- Editor styles (loaded last to override) -->
+  <link rel="stylesheet" href="/css/editor.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="editor-body">
+
+  <!-- Single unified top bar -->
+  <header class="editor-topbar">
+    <div class="editor-topbar-left">
+      <a href="/" class="editor-back" title="Back to drafts">&larr;</a>
+      <span id="editor-title-display" class="editor-topbar-title">Untitled</span>
+    </div>
+
+    <div class="editor-topbar-center">
+      <!-- Formatting toolbar (inline) -->
+      <div class="toolbar-group">
+        <button id="tb-undo" class="tb-btn" title="Undo (Cmd+Z)">&#8617;</button>
+        <button id="tb-redo" class="tb-btn" title="Redo (Cmd+Shift+Z)">&#8618;</button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button id="tb-bold" class="tb-btn" title="Bold (Cmd+B)"><strong>B</strong></button>
+        <button id="tb-italic" class="tb-btn" title="Italic (Cmd+I)"><em>I</em></button>
+        <button id="tb-underline" class="tb-btn" title="Underline (Cmd+U)"><u>U</u></button>
+        <button id="tb-strike" class="tb-btn" title="Strikethrough"><s>S</s></button>
+        <button id="tb-code" class="tb-btn" title="Inline code"><code>&lt;&gt;</code></button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button id="tb-h1" class="tb-btn" title="Heading 1">H1</button>
+        <button id="tb-h2" class="tb-btn" title="Heading 2">H2</button>
+        <button id="tb-h3" class="tb-btn" title="Heading 3">H3</button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button id="tb-bullet" class="tb-btn" title="Bullet list">&#8226;</button>
+        <button id="tb-ordered" class="tb-btn" title="Ordered list">1.</button>
+        <button id="tb-blockquote" class="tb-btn" title="Blockquote">&ldquo;</button>
+        <button id="tb-hr" class="tb-btn" title="Horizontal rule">&mdash;</button>
+      </div>
+      <div class="toolbar-sep"></div>
+      <div class="toolbar-group">
+        <button id="tb-link" class="tb-btn" title="Link (Cmd+K)">&#128279;</button>
+        <button id="tb-math-inline" class="tb-btn" title="Inline math (Cmd+E)">&Sigma;</button>
+        <button id="tb-math-display" class="tb-btn" title="Display math (Cmd+Shift+E)">&int;</button>
+        <button id="tb-figure" class="tb-btn" title="Figure">&#128444;</button>
+        <button id="tb-sidenote" class="tb-btn" title="Sidenote">*</button>
+        <button id="tb-box" class="tb-btn" title="Box (coloured, rows/columns)">&#9638;</button>
+        <button id="tb-citation" class="tb-btn" title="Citation">&#128218;</button>
+      </div>
+    </div>
+
+    <div class="editor-topbar-right">
+      <span id="word-count" class="word-count">0 words</span>
+      <span id="save-status" class="save-status save-saved">Saved</span>
+      <button id="btn-save" class="btn btn-sm">Save</button>
+      <button id="btn-claude" class="btn btn-sm" title="Open this draft in VS Code with Claude Code as a collaborator">Talk to Claude</button>
+      <button id="btn-preview" class="btn btn-sm">Preview</button>
+      <button id="btn-publish" class="btn btn-sm btn-accent">Publish</button>
+    </div>
+  </header>
+
+  <!-- Link popover (hidden by default) -->
+  <div id="link-popover" class="link-popover" style="display:none;">
+    <input type="text" id="link-url-input" class="link-url-input" placeholder="Paste link URL..." />
+    <button id="link-apply" class="btn btn-sm btn-accent">Apply</button>
+    <button id="link-remove" class="btn btn-sm" style="display:none;">Remove</button>
+  </div>
+
+  <!-- Main layout -->
+  <div class="editor-layout">
+
+    <!-- Sidebar -->
+    <aside class="editor-sidebar">
+      <button id="toggle-meta" class="sidebar-toggle">Hide metadata</button>
+
+      <div id="metadata-form" class="meta-form">
+        <div class="meta-field">
+          <label for="meta-title">Title</label>
+          <input type="text" id="meta-title" class="meta-input" placeholder="Post title"/>
+        </div>
+        <div class="meta-field">
+          <label for="meta-subtitle">Subtitle</label>
+          <input type="text" id="meta-subtitle" class="meta-input" placeholder="Short description"/>
+        </div>
+        <div class="meta-field">
+          <label for="meta-date">Date</label>
+          <input type="text" id="meta-date" class="meta-input" placeholder="March 7, 2025"/>
+        </div>
+        <div class="meta-field">
+          <label for="meta-authors">Authors</label>
+          <input type="text" id="meta-authors" class="meta-input" placeholder="Harry Mayne*, Co-author*"/>
+        </div>
+        <div class="meta-field">
+          <label for="meta-description" title="Brief summary shown in the Writing section of the homepage">Description</label>
+          <input type="text" id="meta-description" class="meta-input" placeholder="Brief description for the Writing page"/>
+        </div>
+        <div class="meta-field">
+          <label>Links</label>
+          <div id="meta-links"></div>
+          <button id="add-link-btn" class="btn btn-sm btn-ghost">+ Add link</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3>Contents</h3>
+        <ul id="toc-list" class="editor-toc"></ul>
+      </div>
+    </aside>
+
+    <!-- Editor area -->
+    <div class="editor-main">
+      <article class="blog-post editor-post">
+        <div class="blog-content" id="editor-content"></div>
+      </article>
+    </div>
+  </div>
+
+  <script src="/js/editor.js"></script>
+</body>
+</html>

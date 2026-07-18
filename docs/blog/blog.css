@@ -203,7 +203,7 @@
   margin: 0 0 1.1em;
 }
 
-/* Ordered/unordered lists */
+/* Ordered/unordered lists — tight, Notion-style spacing */
 .blog-content ol,
 .blog-content ul {
   margin: 0 0 1.1em;
@@ -211,7 +211,16 @@
 }
 
 .blog-content li {
-  margin-bottom: 0.6em;
+  margin-bottom: 0.1em;
+}
+
+.blog-content li p {
+  margin: 0;
+}
+
+.blog-content li > ul,
+.blog-content li > ol {
+  margin: 0.1em 0 0;
 }
 
 /* Blockquotes (Workshop Labs style) */
@@ -589,5 +598,59 @@
   .blog-bibtex {
     font-size: 9px;
     padding: 10px 12px;
+  }
+}
+
+/* ===== Boxes (coloured outline containers with rows/columns) ===== */
+.blog-box {
+  --box-color: #8E8E93;
+  --box-line: rgba(142, 142, 147, 0.35);
+  border: 1.5px solid var(--box-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 1.4em 0;
+}
+
+.blog-box-grey   { --box-color: #8E8E93; --box-line: rgba(142, 142, 147, 0.35); }
+.blog-box-red    { --box-color: #a85555; --box-line: rgba(168, 85, 85, 0.30); }
+.blog-box-blue   { --box-color: #4a6fa5; --box-line: rgba(74, 111, 165, 0.30); }
+.blog-box-green  { --box-color: #4e7d5b; --box-line: rgba(78, 125, 91, 0.30); }
+.blog-box-orange { --box-color: #c07a3d; --box-line: rgba(192, 122, 61, 0.30); }
+.blog-box-purple { --box-color: #7d5ba6; --box-line: rgba(125, 91, 166, 0.30); }
+
+.blog-box-row {
+  display: flex;
+}
+
+.blog-box-row + .blog-box-row {
+  border-top: 1px solid var(--box-line);
+}
+
+.blog-box-cell {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 10px 14px;
+}
+
+.blog-box-cell + .blog-box-cell {
+  border-left: 1px solid var(--box-line);
+}
+
+.blog-box-cell > *:first-child { margin-top: 0; }
+.blog-box-cell > *:last-child { margin-bottom: 0; }
+
+/* Nested boxes sit a little tighter */
+.blog-box-cell .blog-box {
+  margin: 0.8em 0;
+}
+
+/* Stack columns on small screens */
+@media screen and (max-width: 479px) {
+  .blog-box-row {
+    flex-direction: column;
+  }
+  .blog-box-cell + .blog-box-cell {
+    border-left: none;
+    border-top: 1px solid var(--box-line);
   }
 }

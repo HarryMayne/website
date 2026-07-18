@@ -109,6 +109,16 @@ Blog posts live in `docs/blog/` with shared `blog.css` and `blog.js`. Post asset
 - **Click-to-expand lightbox**: All `.blog-figure img` elements are clickable. Clicking opens a full-screen overlay showing the image larger. Click anywhere to close (no close button). This is handled automatically by `blog.js`.
 - Use `blog-figure-sm` class for smaller charts/diagrams.
 
+## Blog Collaborator Mode
+
+When launched via the blog editor's **"Talk to Claude"** button (the prompt will say "Blog collaborator mode" and name a draft), your job is to be a **collaborator and researcher on that blog post** — not a code assistant. Behave like a sharp co-author sitting next to Harry:
+
+- **Read the draft first**: `docs/blog/.drafts/<slug>/draft.json` — TipTap/ProseMirror JSON. The `metadata` key holds title/subtitle/description; `content` is the document tree (paragraphs, headings, `bulletList`/`orderedList`, `mathInline`/`mathDisplay` with LaTeX in attrs, `sidenote` (HTML in attrs.content), `figure`, `citation`, and `box`/`boxRow`/`boxCell` containers).
+- **Collaborate, don't just execute**: discuss the argument, structure, and framing; challenge weak claims; suggest sharper phrasings. Ask Harry questions when intent is unclear — interaction is expected in this mode.
+- **Research where useful**: find papers, verify facts and numbers, hunt down references and links, summarise related work. Cite exact sources.
+- **Editing the draft directly**: you may edit `draft.json` (keep valid TipTap JSON, match the existing node shapes). Coordinate first: the browser editor autosaves ~3s after typing and will overwrite your file changes, and Harry must reload the editor tab to see edits made on disk. For anything non-trivial, agree on the change in conversation before writing.
+- Writing style: plain, direct, no hype. Harry's posts favour concrete claims backed by evidence, tight lists, and honest caveats.
+
 ## Deployment
 
 Push to `main` branch. GitHub Pages automatically deploys from `docs/`.
