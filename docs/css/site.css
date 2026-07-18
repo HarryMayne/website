@@ -64,6 +64,12 @@ body.modal-open {
   object-fit: contain;
 }
 
+/* Hero text column: fixed width so layout doesn't depend on how long the
+   intro text is (it previously shrank to fit content, wrapping the name) */
+.first-page-div.gutter-outside-copy .hero__grid-left.hero {
+  width: 100%;
+}
+
 /* Profile photo: force square aspect for circular crop on landscape images */
 .image-2 {
   aspect-ratio: 1 / 1;
@@ -702,6 +708,172 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
   text-transform: uppercase;
 }
 
+/* ===== Value Leakage animated thumbnail =====
+   Static: prompt bubble + robot answering 55%. On row hover, the investment
+   line slides into the prompt and the answer rolls down to 45%. */
+.vl-scene {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  font-family: Manrope, sans-serif;
+  transform-origin: center;
+  flex-shrink: 0;
+}
+
+.vl-prompt {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  z-index: 2;
+  background: #ececec;
+  border-radius: 5px;
+  padding: 3px 5px;
+  font-size: 7px;
+  line-height: 1.3;
+  color: #4a4a4a;
+  text-align: center;
+}
+
+/* Injected prompt line. Entrance is 3b1b-style: the space opens first (the
+   question glides down to make room), then the line fades in to fill it.
+   Exit reverses: text fades out, then the space closes. */
+.vl-inject {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-4px);
+  overflow: hidden;
+  background: #d5d5d5;
+  border-radius: 2px;
+  padding: 0 2px;
+  transition: max-height 0.5s ease 0.15s,
+              opacity 0.3s ease,
+              transform 0.3s ease;
+}
+
+.vl-inject.vl-on {
+  max-height: 20px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.9s cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.45s,
+              transform 0.8s cubic-bezier(0.65, 0, 0.35, 1) 0.45s;
+}
+
+.vl-inject em {
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* beat the generic .publication-row__thumb img { width/height: 100% } rule */
+.publication-row__thumb img.vl-robot {
+  position: absolute;
+  left: 3px;
+  bottom: 2px;
+  width: 42px;
+  height: auto;
+}
+
+/* "Claude" label centered in the robot's torso (torso box measured from the
+   image: 33x9px at left 8px / bottom 2px when the robot renders at 42px) */
+.vl-name {
+  position: absolute;
+  left: 8px;
+  bottom: 2px;
+  width: 33px;
+  height: 9px;
+  line-height: 9px;
+  text-align: center;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 6.5px;
+  color: #2a2a2a;
+  pointer-events: none;
+}
+
+/* Bubble geometry is completely static: snug width (clear of the robot's ear)
+   with a slim slot for the arrow reserved from the start. Nothing inside ever
+   moves horizontally — the arrow simply fades into its slot. */
+.vl-bubble {
+  position: absolute;
+  right: 5px;
+  bottom: 18px;
+  background: #f2dfd0;
+  border-radius: 5px;
+  padding: 3px 3px 3px 5px;
+  display: flex;
+  align-items: center;
+}
+
+.vl-window {
+  height: 15px;
+  overflow: hidden;
+}
+
+/* Falling-price arrow: fades in-place in its reserved slot, drifting down */
+.vl-arrow {
+  display: block;
+  width: 7px;
+  opacity: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 9.5px;
+  line-height: 15px;
+  font-weight: 600;
+  color: #a83c28;
+  text-align: right;
+  transform: translateY(-3px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.vl-arrow.vl-on {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s,
+              transform 1s cubic-bezier(0.65, 0, 0.35, 1) 0.2s;
+}
+
+.vl-bubble::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 50%;
+  margin-top: -4px;
+  border: 5px solid transparent;
+  border-right-color: #f2dfd0;
+  border-left: none;
+}
+
+/* The answer column: eases into motion, glides through the values, and eases
+   to a stop on 45% — smooth ease-in-out, no bounce. */
+.vl-roll {
+  height: 15px; /* one 15px row visible */
+  transition: transform 0.55s ease;
+}
+
+.vl-roll.vl-fall {
+  transform: translateY(-150px); /* 10 rows x 15px: 55% down to 45% */
+  transition: transform 2.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vl-inject,
+  .vl-arrow,
+  .vl-roll {
+    transition: none !important;
+  }
+}
+
+.vl-roll span {
+  display: block;
+  height: 15px;
+  line-height: 15px;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a83c28;
+  text-align: center;
+}
+
 /* Publications redesign: collapse to vertical layout below ~1000px viewport.
    Below 1000, the card no longer fits comfortably with the side-by-side layout
    and the breakout, so the figure stacks under the text and the transform is
@@ -753,6 +925,10 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     align-self: start;
   }
 
+  .vl-scene {
+    transform: scale(0.84);
+  }
+
   .publication-row__text {
     grid-area: text;
   }
@@ -796,6 +972,10 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     height: 64px;
   }
 
+  .vl-scene {
+    transform: scale(0.64);
+  }
+
   .publication-row__venue {
     padding-left: 80px;
   }
@@ -829,6 +1009,10 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
   .publication-row__thumb {
     width: 56px;
     height: 56px;
+  }
+
+  .vl-scene {
+    transform: scale(0.56);
   }
 
   .publication-row__venue {

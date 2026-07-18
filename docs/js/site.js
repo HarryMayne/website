@@ -229,3 +229,54 @@
     });
   }
 })();
+
+/* Value Leakage thumbnail: hover plays a slow, deliberate timeline. The prompt
+   opens up and the investment line fades into the space, a beat to read it,
+   then the answer glides down 55% -> 45% with a falling-price arrow. All the
+   motion itself lives in CSS transitions; this only steps through the phases. */
+(function () {
+  var row = document.querySelector('.publication-row--vl');
+  if (!row) {
+    return;
+  }
+
+  var inject = row.querySelector('.vl-inject');
+  var roll = row.querySelector('.vl-roll');
+  var arrow = row.querySelector('.vl-arrow');
+  if (!inject || !roll) {
+    return;
+  }
+
+  var timers = [];
+
+  function later(fn, delay) {
+    timers.push(window.setTimeout(fn, delay));
+  }
+
+  function play() {
+    timers.forEach(window.clearTimeout);
+    timers = [];
+    later(function () {
+      inject.classList.add('vl-on'); // space opens, line fades in (~1.3s)
+    }, 300);
+    later(function () {
+      roll.classList.add('vl-fall'); // answer glides down (~2.8s)
+      if (arrow) {
+        arrow.classList.add('vl-on');
+      }
+    }, 2300);
+  }
+
+  function reset() {
+    timers.forEach(window.clearTimeout);
+    timers = [];
+    inject.classList.remove('vl-on');
+    roll.classList.remove('vl-fall');
+    if (arrow) {
+      arrow.classList.remove('vl-on');
+    }
+  }
+
+  row.addEventListener('mouseenter', play);
+  row.addEventListener('mouseleave', reset);
+})();
