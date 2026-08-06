@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <title>A Positive Case for Faithfulness — Harry Mayne</title>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <meta name="description" content="Existing faithfulness metrics are not suitable for evaluating frontier LLMs. We introduce a new metric based on whether a model's self-explanations help people predict its behavior on related inputs."/>
+  <meta name="description" content="Existing faithfulness metrics are not suitable for evaluating frontier LLMs. We introduce a new metric based on whether a model's self-explanations help people predict its behaviour on related inputs."/>
   <link href="../assets/css/site-2-ee27e6.webflow.shared.afb1fee4b.css" rel="stylesheet" type="text/css"/>
   <link href="../css/site.css" rel="stylesheet" type="text/css"/>
   <link href="blog.css" rel="stylesheet" type="text/css"/>
@@ -46,7 +46,7 @@
     <article class="blog-post">
       <header class="blog-header">
         <h1>A Positive Case for Faithfulness</h1>
-        <p class="blog-subtitle">Existing faithfulness metrics are not suitable for evaluating frontier LLMs. We introduce a new metric based on whether a model's self-explanations help people predict its behavior on related inputs. We find self-explanations encode valuable information about a model decision-making process (though they remain imperfect).</p>
+        <p class="blog-subtitle">Existing faithfulness metrics are not suitable for evaluating frontier LLMs. We introduce a new metric based on whether a model's self-explanations help people predict its behaviour on related inputs. We find self-explanations encode valuable information about a model decision-making process (though they remain imperfect).</p>
       </header>
 
       <hr class="blog-divider"/>
@@ -94,7 +94,7 @@
           <h2>Explanatory faithfulness</h2>
           <p>Explanatory faithfulness asks whether an LLM's self-explanations (CoT or post-hoc) accurately describe the model's true reasoning process. This is important because:</p>
           <ol>
-            <li>CoT faithfulness is an important (though not sufficient) condition for <a href="https://arxiv.org/pdf/2507.11473" target="_blank">AI safety methods that rely on oversight of externalized reasoning</a>.</li>
+            <li>CoT faithfulness is an important (though not sufficient) condition for <a href="https://arxiv.org/pdf/2507.11473" target="_blank">AI safety methods that rely on oversight of externalised reasoning</a>.</li>
             <li>In high-stakes domains, e.g. healthcare, the reasoning process is often useful for verifying the validity of the final output.</li>
           </ol>
           <p>We study <em>explanatory faithfulness</em> rather than <em>causal faithfulness,</em> i.e. does the explanation describe the reasoning process, regardless of whether the explanation was causally important for reaching the final output.<span class="blog-sidenote-ref">1</span> <a href="https://aclanthology.org/2024.acl-short.49.pdf" target="_blank">See here for formal definitions.</a></p>
@@ -116,7 +116,7 @@
 
         <section id="nsg">
           <h2>Normalized Simulatability Gain.</h2>
-          <p>Our metric doesn't rely on adversarial cues or hints, allowing it to scale to frontier models. Our method is based on the following principle: a faithful explanation should allow an observer to learn a model's decision-making criteria, and thus better predict its behavior on related inputs.</p>
+          <p>Our metric doesn't rely on adversarial cues or hints, allowing it to scale to frontier models. Our method is based on the following principle: a faithful explanation should allow an observer to learn a model's decision-making criteria, and thus better predict its behaviour on related inputs.</p>
           <p>For example, if an LLM is used in a hiring process and explains a decision by mentioning it does not consider gender or race, then an observer would predict it would give the same decision on a related input where the gender or race was switched.</p>
           <p>For example, consider an LLM is used in a medical setting, sees some patient data, and predicts the patient does not have heart disease. They might explain this by saying that they made the decision based on the old age of the patient. An observer might reasonably infer from this that if age were lower, the model would switch its decision.</p>
           <p>We can then determine whether the explanation was faithful by evaluating how the model behaves on this counterfactual.</p>
@@ -143,7 +143,7 @@
         <section id="positive-case">
           <h2>A positive case for faithfulness.</h2>
           <p>We consider 18 reference models, evaluating each with 5 predictor models (gpt-oss-20b, Qwen-3-32B, gemma-3-27b-it, GPT-5 mini, and gemini-3-flash).</p>
-          <p>We find that self-explanations substantially improve prediction of model behavior. All evaluated models show significant simulability gains from explanations, with explanations addressing up to 1/3 of predictor errors.</p>
+          <p>We find that self-explanations substantially improve prediction of model behaviour. All evaluated models show significant simulability gains from explanations, with explanations addressing up to 1/3 of predictor errors.</p>
 
           <figure class="blog-figure">
             <img src="assets/faithfulness/fig1.png" alt="A Positive Case for Faithfulness. We measure whether an observer can predict an LLM's behaviour both without and with access to its self-explanations. Self-explanations consistently help prediction." loading="lazy"/>
@@ -169,7 +169,7 @@
 
           <p>This provides evidence for a privileged self-knowledge advantage, where models have access to information about their own decision-making that an external observer cannot derive from input-output behaviour alone.<span class="blog-sidenote-ref">4</span></p>
           <aside class="blog-sidenote">
-            <span class="blog-sidenote-number">4</span> Note that there are multiple possible explanations for this. One is that models might be able to introspect on their reasoning process and externalise the true decision-making criteria (<a href="https://arxiv.org/abs/2410.13787" target="_blank">Binder et al. 2024</a>; <a href="https://arxiv.org/pdf/2601.01828" target="_blank">Lindsey, 2026</a>). More simply, they may have just learnt information about themselves from part of the training process, e.g. long-horizon RL rewards some self-knowledge about behaviors and capabilities in order to do effective planning.
+            <span class="blog-sidenote-number">4</span> Note that there are multiple possible explanations for this. One is that models might be able to introspect on their reasoning process and externalise the true decision-making criteria (<a href="https://arxiv.org/abs/2410.13787" target="_blank">Binder et al. 2024</a>; <a href="https://arxiv.org/pdf/2601.01828" target="_blank">Lindsey, 2026</a>). More simply, they may have just learnt information about themselves from part of the training process, e.g. long-horizon RL rewards some self-knowledge about behaviours and capabilities in order to do effective planning.
           </aside>
         </section>
 
