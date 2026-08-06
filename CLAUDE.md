@@ -85,11 +85,12 @@ See `ISSUE_MISSING_ASSETS.md` for missing files:
 ## Content Sections (index.html)
 
 1. **Hero** - Name, title, social links, profile photo
-2. **Research** - Publications grid with thumbnails
-3. **About** - Education history and grants
-4. **Teaching** - Links to Stanford, Oxford, Oxmedica pages
-5. **Blog** - Cambridge economics interview questions resource
-6. **Contact** - Email address
+2. **Research** - Intro, featured paper, publications list
+3. **Positions** - Fellowships and other roles (`#positions`)
+4. **Writing** - Blog post list (`#blog`)
+5. **About** - Education, Grants & Awards, Teaching (links to Stanford/Oxford/Oxmedica pages), and Contact as subsections (`#about`, with `#teaching`/`#contact` anchors inside)
+
+All list sections share one framing: `writing-list`/`writing-entry` with a fixed 165px grey date column on the left and title + description on the right.
 
 ## Style Guidelines
 
@@ -98,6 +99,8 @@ See `ISSUE_MISSING_ASSETS.md` for missing files:
 - Test across pages when modifying shared CSS/JS
 - Ensure accessibility (keyboard navigation, screen readers)
 - **Never use em-dashes** (---, &mdash;). Use commas, semicolons, or en-dashes instead.
+- **Use British English throughout** (summarise, behaviour, memorisation, programme). Exception: published titles and named artefacts keep their original spelling (e.g. the paper title "…Help Predict Model Behavior", the "Normalized Simulatability Gain" metric).
+- **Inline link style**: text links use the underline + tan hover-box style (see `.read-more-link` and the `.text-block-3 a` rules in `site.css`), not boxed pills or buttons.
 - **Use LaTeX for equations** in blog posts. Include KaTeX via CDN in the `<head>` and use `$$...$$` for display math, `\(...\)` for inline math.
 
 ## Blog Posts
@@ -105,7 +108,7 @@ See `ISSUE_MISSING_ASSETS.md` for missing files:
 Blog posts live in `docs/blog/` with shared `blog.css` and `blog.js`. Post assets go in `docs/blog/assets/<post-slug>/`.
 
 ### Figures
-- **Background removal**: All figure images should have white backgrounds removed (made transparent) so they blend with the site's beige background. Use PIL/Pillow with a threshold of R,G,B > 240 to identify white pixels and set alpha to 0.
+- **Background removal**: All figure images should have white backgrounds removed (made transparent) so they blend with the site's beige background. Do NOT blanket-remove all near-white pixels (R,G,B > 240): that punches holes through enclosed white fills (boxes, characters, speech bubbles). Instead: (1) flood-fill from the image borders across near-white pixels — only that connected region is background; (2) letter counters (the holes in o/a/e/d of text sitting directly on the background) are enclosed but should also be transparent — detect them as small (<800px) enclosed components whose surroundings (dilate ~18px, past the glyph stroke) touch the outer background; counters inside opaque boxes stay opaque. Verify with zoomed screenshots over the site beige before finishing.
 - **Click-to-expand lightbox**: All `.blog-figure img` elements are clickable. Clicking opens a full-screen overlay showing the image larger. Click anywhere to close (no close button). This is handled automatically by `blog.js`.
 - Use `blog-figure-sm` class for smaller charts/diagrams.
 
