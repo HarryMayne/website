@@ -280,3 +280,64 @@
   row.addEventListener('mouseenter', play);
   row.addEventListener('mouseleave', reset);
 })();
+
+/* Animated publication thumbnails: each row declares data-anim and data-beats
+   (comma-separated ms offsets). Hovering the row steps through the phases by
+   toggling .on on elements tagged .anim with a matching data-step; all motion
+   lives in CSS transitions (see the thumbnail section of site.css). */
+(function () {
+  /* Even tracking for the LingOly-TOO letters: each cell is its own glyph's
+     width plus a constant gap, measured in the rendered font, so the space
+     between letters is identical across the words. Re-run once webfonts load. */
+  function sizeLtCells() {
+    var cells = document.querySelectorAll('.lt-cell');
+    if (!cells.length) {
+      return;
+    }
+    var style = window.getComputedStyle(cells[0]);
+    var ctx = document.createElement('canvas').getContext('2d');
+    ctx.font = style.fontWeight + ' ' + style.fontSize + ' ' + style.fontFamily;
+    Array.prototype.forEach.call(cells, function (cell) {
+      var orig = cell.querySelector('.g-orig');
+      cell.style.width = (ctx.measureText(orig.textContent).width + 2.2) + 'px';
+    });
+  }
+  sizeLtCells();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(sizeLtCells);
+  }
+
+  var rows = document.querySelectorAll('.publication-row[data-anim]');
+  Array.prototype.forEach.call(rows, function (row) {
+    var beats = (row.getAttribute('data-beats') || '300').split(',').map(Number);
+    var timers = [];
+
+    function later(fn, delay) {
+      timers.push(window.setTimeout(fn, delay));
+    }
+
+    function setStep(step, on) {
+      var els = row.querySelectorAll('.anim[data-step="' + step + '"]');
+      Array.prototype.forEach.call(els, function (el) {
+        el.classList.toggle('on', on);
+      });
+    }
+
+    row.addEventListener('mouseenter', function () {
+      timers.forEach(window.clearTimeout);
+      timers = [];
+      beats.forEach(function (t, i) {
+        later(function () { setStep(i + 1, true); }, t);
+      });
+    });
+
+    row.addEventListener('mouseleave', function () {
+      timers.forEach(window.clearTimeout);
+      timers = [];
+      var els = row.querySelectorAll('.anim');
+      Array.prototype.forEach.call(els, function (el) {
+        el.classList.remove('on');
+      });
+    });
+  });
+})();

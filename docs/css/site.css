@@ -247,6 +247,12 @@ body.modal-open {
   max-height: none;
 }
 
+/* Breathing room at the bottom of the page (the old full-height contact
+   section used to provide this) */
+.main-page-section:last-of-type {
+  padding-bottom: 20vh;
+}
+
 .offset,
 .offse_top {
   height: 40px;
@@ -264,11 +270,34 @@ body.modal-open {
   box-shadow: 0 2px 0 0 #c1c2c5 !important;
 }
 
-/* Nav link hover: match social icon hover colour */
+/* Header links: one hover style for all of them (the site-wide underline
+   method) instead of Webflow's mix of cream boxes and colour changes */
 .main-nav__link:hover,
 .main-nav__link:hover div {
-  color: #d9c4b0 !important;
+  color: #f8eed8 !important;
   opacity: 1 !important;
+}
+
+.name:hover,
+.cv:hover {
+  color: #f8eed8;
+  background-color: transparent;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+.name:hover .logo-text,
+.cv:hover .logo-text {
+  color: #f8eed8;
+}
+
+.main-nav__link:hover div,
+.name:hover .logo-text,
+.cv:hover .logo-text {
+  text-decoration: underline;
+  text-decoration-color: #d9c4b0;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
 }
 
 /* Recolor social logos from green to pale cream (#f8eed8) */
@@ -286,20 +315,30 @@ body.modal-open {
   line-height: 1.7;
 }
 
-/* Inline text links: boxed style instead of blue underline */
-.div-block-4 .text-block-3 a:not(.w-inline-block) {
+/* Inline text links: quiet crossfade. Muted tan underline at rest;
+   on hover the underline fades out as the tan box fades in. */
+.div-block-4 .text-block-3 a:not(.w-inline-block),
+.div-block-4 .research-intro a,
+.read-more-link {
   color: inherit;
-  text-decoration: none;
-  background-color: #e2d5c3;
-  padding: 2px 5px;
+  text-decoration: underline;
+  text-decoration-color: #b3a189;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  background-color: transparent;
+  padding: 2px 4px;
+  margin: 0 -1px;
   border-radius: 3px;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.15s ease, text-decoration-color 0.15s ease;
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
 
-.div-block-4 .text-block-3 a:not(.w-inline-block):hover {
-  background-color: #d4c4ad;
+.div-block-4 .text-block-3 a:not(.w-inline-block):hover,
+.div-block-4 .research-intro a:hover,
+.read-more-link:hover {
+  background-color: #e2d5c3;
+  text-decoration-color: transparent;
 }
 
 /* Publication photo links */
@@ -385,10 +424,11 @@ body.modal-open {
 
 .writing-date {
   flex-shrink: 0;
-  width: 120px;
+  width: 165px;
   font-family: Manrope, sans-serif;
   font-size: 14px;
   color: #888;
+  white-space: nowrap;
 }
 
 .writing-info {
@@ -403,7 +443,7 @@ body.modal-open {
   text-decoration: none;
 }
 
-.writing-title:hover {
+a.writing-title:hover {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -417,11 +457,6 @@ body.modal-open {
   line-height: 1.5;
 }
 
-/* About section: tighter spacing within subsections */
-.grid-2 {
-  grid-row-gap: 16px !important;
-}
-
 /* About section: align CV button column with dates column */
 .grid-3 {
   grid-template-columns: 1fr .27fr !important;
@@ -431,6 +466,12 @@ body.modal-open {
 .div-block-4 .heading-5 {
   margin-top: 28px;
   margin-bottom: 12px;
+}
+
+/* Text directly under a subheading (Teaching intro, Contact email):
+   trim Webflow's 40px top margin to match the heading-to-list rhythm */
+.div-block-4 .heading-5 + .text-block-3 {
+  margin-top: 16px;
 }
 
 /* Oral highlight: muted warm red */
@@ -532,7 +573,6 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
   width: 100%;
   height: auto;
   display: block;
-  mix-blend-mode: multiply;
 }
 
 .featured-paper__footer {
@@ -922,7 +962,8 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     align-self: start;
   }
 
-  .vl-scene {
+  .vl-scene,
+  .thumb-scene {
     transform: scale(0.84);
   }
 
@@ -969,7 +1010,8 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     height: 64px;
   }
 
-  .vl-scene {
+  .vl-scene,
+  .thumb-scene {
     transform: scale(0.64);
   }
 
@@ -1008,7 +1050,8 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     height: 56px;
   }
 
-  .vl-scene {
+  .vl-scene,
+  .thumb-scene {
     transform: scale(0.56);
   }
 
@@ -1178,16 +1221,6 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
 
   .grid-3 .button.w-button {
     margin-top: 4px;
-  }
-
-  .grid-2 {
-    grid-template-columns: 1fr !important;
-    grid-template: none !important;
-  }
-
-  .text-block-7 {
-    text-align: left;
-    margin-top: -4px;
   }
 
   /* Item-list (teaching): 2-col → 1-col */
@@ -1416,4 +1449,395 @@ body > div:not(.page-wrapper) > section:first-of-type .offset {
     font-size: 1.5em;
     margin-left: 20px;
   }
+}
+
+
+/* ===== Animated publication thumbnails =====
+   Same grammar as the Value Leakage scene: hovering the row steps through
+   phases (site.js toggles .on on elements tagged .anim/data-step); all the
+   motion itself lives in these transitions. Scenes scale with the thumb at
+   each breakpoint via .thumb-scene above. */
+.thumb-scene {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  font-family: Manrope, sans-serif;
+  transform-origin: center;
+  flex-shrink: 0;
+}
+
+.thumb-scene svg {
+  display: block;
+}
+
+/* --- A Positive Case for Faithfulness: predicted swerve vs actual path --- */
+.fa-title {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 6.5px;
+  font-style: italic;
+  font-weight: 600;
+  color: #2a2a2a;
+}
+
+.fa-reveal {
+  stroke-dashoffset: 103;
+  transition: stroke-dashoffset 0.4s ease;
+}
+
+.fa-reveal.on {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.fa-head {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fa-head.on {
+  opacity: 1;
+  transition: opacity 0.5s ease 1.5s;
+}
+
+.fa-plabel {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fa-plabel.on {
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1) 1s;
+}
+
+.fa-pred {
+  opacity: 1;
+  transition: opacity 0.4s ease;
+}
+
+.fa-pred.on {
+  opacity: 0.3;
+  transition: opacity 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.fa-trailrev {
+  stroke-dashoffset: 103;
+  transition: stroke-dashoffset 0.4s ease;
+}
+
+.fa-trailrev.on {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.fa-ahead {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fa-ahead.on {
+  opacity: 1;
+  transition: opacity 0.5s ease 1.5s;
+}
+
+.fa-alabel {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fa-alabel.on {
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1) 1s;
+}
+
+.fa-car {
+  offset-path: path('M 12 71 L 46.5 71');
+  offset-rotate: 0deg;
+  offset-distance: 0%;
+  transition: offset-distance 0.6s ease;
+}
+
+.fa-car.on {
+  offset-distance: 100%;
+  transition: offset-distance 2.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* --- LingOly-TOO: the word re-spells itself, then the score falls --- */
+.lt-scene {
+  background: #000206;
+}
+
+.lt-word {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.lt-cell {
+  position: relative;
+  width: 8.5px;
+  height: 15px;
+  font-size: 10.5px;
+  line-height: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.lt-cell span {
+  position: absolute;
+  inset: 0;
+}
+
+.lt-cell .g-orig {
+  color: #f0ede6;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.lt-cell .g-obf {
+  color: #d8b45a;
+  opacity: 0;
+  transform: rotateX(90deg);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.lt-cell.on .g-orig {
+  opacity: 0;
+  transform: rotateX(-90deg);
+  transition: opacity 0.7s cubic-bezier(0.65, 0, 0.35, 1) var(--d),
+              transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) var(--d);
+}
+
+.lt-cell.on .g-obf {
+  opacity: 1;
+  transform: rotateX(0deg);
+  transition: opacity 0.7s cubic-bezier(0.65, 0, 0.35, 1) var(--d),
+              transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) var(--d);
+}
+
+.lt-score {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.lt-score .lbl {
+  font-size: 6.5px;
+  color: #7d8894;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lt-win {
+  height: 13px;
+  overflow: hidden;
+  width: 24px;
+}
+
+.lt-roll {
+  transition: transform 0.55s ease;
+}
+
+.lt-roll.on {
+  transform: translateY(-65px);
+  transition: transform 2.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.lt-roll span {
+  display: block;
+  height: 13px;
+  line-height: 13px;
+  font-size: 9px;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* --- Decision boundaries: one invalid counterfactual, one valid --- */
+.db-red {
+  transform: translate(0, 0);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.db-red.on {
+  transform: translate(-22px, 0);
+  opacity: 1;
+  transition: transform 1.9s cubic-bezier(0.65, 0, 0.35, 1) 0.3s, opacity 0.6s ease;
+}
+
+.db-x {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.db-x.on {
+  opacity: 1;
+  transition: opacity 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.db-green {
+  transform: translate(0, 0);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.db-green.on {
+  transform: translate(0, -38px);
+  opacity: 1;
+  transition: transform 2.2s cubic-bezier(0.65, 0, 0.35, 1) 0.2s, opacity 0.6s ease;
+}
+
+.db-tick {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.db-tick.on {
+  opacity: 1;
+  transition: opacity 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.db-arr1 {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.db-arr1.on {
+  opacity: 1;
+  transition: opacity 0.9s cubic-bezier(0.65, 0, 0.35, 1) 1.3s;
+}
+
+.db-arr2 {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.db-arr2.on {
+  opacity: 1;
+  transition: opacity 0.9s cubic-bezier(0.65, 0, 0.35, 1) 1.4s;
+}
+
+/* --- Toxic neurons: shield holds, toxicity reroutes around it --- */
+.tn-shield {
+  transform-origin: 50px 62px;
+}
+
+.tn-shield.on {
+  animation: tn-pulse 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes tn-pulse {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+.tn-arrow {
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.3s ease;
+}
+
+.tn-arrow.on {
+  opacity: 1;
+  transform: scale(1) !important;
+  transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.7s ease;
+}
+
+/* --- Measuring what Matters: one benchmark's path through the Sankey --- */
+.mm-flow {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  opacity: 0;
+  transition: stroke-dashoffset 0.4s ease, opacity 0.3s ease;
+}
+
+.mm-flow.on {
+  stroke-dashoffset: 0;
+  opacity: 0.85;
+  transition: stroke-dashoffset 1.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+}
+
+.mm-final {
+  transition: fill 0.4s ease;
+}
+
+.mm-final.on {
+  fill: #5d7a34;
+  transition: fill 1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* --- LingOly: slow camera push into the letter-globe --- */
+.publication-row__thumb img.lg-img {
+  object-fit: cover;
+  transform-origin: 50% 46%;
+  transform: scale(1) rotate(0deg);
+  filter: brightness(1) saturate(1);
+  transition: transform 1.4s ease, filter 1.4s ease;
+}
+
+.publication-row__thumb img.lg-img.on {
+  transform: scale(1.16) rotate(5deg);
+  filter: brightness(1.06) saturate(1.06);
+  transition: transform 7s cubic-bezier(0.25, 0.1, 0.2, 1), filter 7s cubic-bezier(0.25, 0.1, 0.2, 1);
+}
+
+/* --- Can SAEs Decompose Steering Vectors: the clamped projection --- */
+.sv-proj {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sv-proj.on {
+  opacity: 1;
+  transition: opacity 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.sv-projlabel {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sv-projlabel.on {
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.65, 0, 0.35, 1) 0.7s;
+}
+
+.sv-clamp {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.sv-clamp.on {
+  opacity: 1;
+  transition: opacity 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.sv-strike {
+  stroke-dasharray: 27;
+  stroke-dashoffset: 27;
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.sv-strike.on {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.9s cubic-bezier(0.65, 0, 0.35, 1) 0.5s;
+}
+
+.sv-zero {
+  transform: translateX(0);
+  transition: transform 0.5s ease;
+}
+
+.sv-zero.on {
+  transform: translateX(18px);
+  transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
 }
