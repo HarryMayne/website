@@ -244,17 +244,26 @@
   font-style: italic;
 }
 
-/* Inline links in content */
+/* Inline links in content: quiet crossfade. Muted tan underline at rest;
+   on hover the underline fades out as the tan box fades in. */
 .blog-content a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-color: rgba(0, 0, 0, 0.35);
-  transition: text-decoration-color 0.15s ease;
+  text-underline-offset: 3px;
+  text-decoration-color: #b3a189;
+  text-decoration-thickness: 1.5px;
+  background-color: transparent;
+  padding: 2px 4px;
+  margin: 0 -1px;
+  border-radius: 3px;
+  transition: background-color 0.15s ease, text-decoration-color 0.15s ease;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 .blog-content a:hover {
-  text-decoration-color: rgba(0, 0, 0, 0.8);
+  background-color: #e2d5c3;
+  text-decoration-color: transparent;
 }
 
 /* Sidenotes (Tufte-style, float into right gutter) */
